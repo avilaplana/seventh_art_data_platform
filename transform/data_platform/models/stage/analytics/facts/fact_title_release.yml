@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: fact_title_release
+    description: >
+      Fact table containing localized title information including region and language.
+
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      - name: title_id
+        description: Foreign key referencing dim_title.
+        data_type: string
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_title')
+              field: title_id
+              severity: warn
+
+      - name: localized_title
+        description: Localized title used in a specific region.
+        data_type: string
+
+      - name: region_name
+        description: Region where the localized title is used.
+        data_type: string
+
+      - name: language_name
+        description: Language of the localized title.
+        data_type: string
+
+      - name: is_original_title
+        description: Indicates whether the localized title is the original title.
+        data_type: boolean

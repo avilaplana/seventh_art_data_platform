@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: dim_person
+    description: >
+      Dimension table containing information about people involved in titles
+      such as actors, directors, and writers.
+
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      - name: person_id
+        description: Unique identifier of the person from IMDb.
+        data_type: string
+        tests:
+          - not_null
+          - unique
+
+      - name: name
+        description: Full name of the person.
+        data_type: string
+        tests:
+          - not_null
+
+      - name: birth_year
+        description: Year the person was born.
+        data_type: integer
+
+      - name: death_year
+        description: Year the person died if applicable.
+        data_type: integer

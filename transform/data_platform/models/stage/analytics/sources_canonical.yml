@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: stage_canonical
+    schema: stage_canonical
+    tables:
+      - name: regions
+      - name: languages
+      - name: genre_title
+      - name: genre      
+      - name: person      
+      - name: role_person
+      - name: role
+      - name: title_context
+      - name: title_episode
+      - name: title_localized      
+      - name: title_person_role
+      - name: title_type
+      - name: title      

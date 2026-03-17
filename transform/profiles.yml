@@ -12,3 +12,14 @@ movie_data_platform:
       connect_timeout: 60
       retry_all: true
 
+    stage_analytics:
+      type: spark
+      method: thrift
+      host: spark-thrift-server
+      port: 10000
+      user: dbt
+      schema: stage_analytics
+      connect_retries: 5
+      connect_timeout: 60
+      retry_all: true
+

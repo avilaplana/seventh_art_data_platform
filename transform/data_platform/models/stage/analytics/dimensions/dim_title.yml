@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: dim_title
+    description: >
+      Dimension table containing the core descriptive attributes of titles
+      such as movies, TV shows, and episodes.
+
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      - name: title_id
+        description: Unique identifier of the title from IMDb.
+        data_type: string
+        tests:
+          - not_null
+          - unique
+
+      - name: primary_title
+        description: Main display title of the movie or show.
+        data_type: string
+        tests:
+          - not_null
+
+      - name: original_title
+        description: Original title used when the title was first released.
+        data_type: string
+
+      - name: title_type_name
+        description: Type of title such as movie, tvSeries, or episode.
+        data_type: string
+        tests:
+          - not_null
+
+      - name: release_year
+        description: Year the title was released.
+        data_type: integer
+
+      - name: duration_minutes
+        description: Runtime of the title in minutes.
+        data_type: integer
+
+      - name: is_adult
+        description: Indicates whether the title is marked as adult content.
+        data_type: boolean
+
+      - name: average_rating
+        description: Average IMDb rating for the title.
+        data_type: numeric
+
+      - name: number_of_votes
+        description: Total number of user votes used to calculate the rating.
+        data_type: integer
+
+      - name: decade
+        description: Decade derived from the release year (e.g. 1990s, 2000s).
+        data_type: string
+
+      - name: rating_bucket
+        description: Rating bucket derived from the average rating.
+        data_type: string

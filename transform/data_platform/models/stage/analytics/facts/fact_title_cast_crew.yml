@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: fact_title_cast_crew
+    description: >
+      Fact table capturing the participation of people in titles.
+      Each row represents a person involved in a title with a specific role.
+
+    config:
+      contract:
+        enforced: true
+
+    columns:
+      - name: title_id
+        description: Foreign key referencing dim_title.
+        data_type: string
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_title')
+              field: title_id
+
+      - name: person_id
+        description: Foreign key referencing dim_person.
+        data_type: string
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_person')
+              field: person_id
+
+      - name: role_name
+        description: Role performed by the person in the title (Actor, Director, etc.).
+        data_type: string
+        tests:
+          - not_null
+
+      - name: release_year
+        description: Release year of the title (denormalized from dim_title).
+        data_type: integer
+
+      - name: average_rating
+        description: Average IMDb rating of the title.
+        data_type: numeric
+
+      - name: number_of_votes
+        description: Number of user votes received by the title.
+        data_type: integer

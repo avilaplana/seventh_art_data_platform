@@ -35,3 +35,7 @@ models:
         +catalog: demo
         +file_format: iceberg
         +materialized: table
+      analytics:
+        +catalog: demo
+        +file_format: iceberg
+        +materialized: table        

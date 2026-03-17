@@ -146,7 +146,7 @@ with DAG(
     """
     
     dbt_deps_task = DockerOperator(
-        task_id="transform_DBT_stage_deps",
+        task_id="transform_DBT_deps",
         image="dbt-spark:f5bf2ec",
         command=dbt_deps_command,
         mounts=[
@@ -196,6 +196,7 @@ with DAG(
     ############################################
     dbt_canonical_run_command = """run 
     --profiles-dir /usr/app/dbt 
+    --models stage.canonical
     --target stage_canonical 
     --project-dir /usr/app/dbt/data_platform
     """
@@ -222,7 +223,8 @@ with DAG(
     # Step 6: Data Validation Canonical layer #
     ############################################
     dbt_canonical_validation_command = """test
-    --profiles-dir /usr/app/dbt 
+    --profiles-dir /usr/app/dbt
+    --models stage.canonical
     --target stage_canonical 
     --project-dir /usr/app/dbt/data_platform
     """
@@ -245,8 +247,65 @@ with DAG(
         mount_tmp_dir=False,
     )
 
+   ############################################
+    # Step 7: Transform Medallion Analytics layer #
     ############################################
-    # Step 7: Retry whole DAG on validation failure
+    dbt_analytics_run_command = """run 
+    --profiles-dir /usr/app/dbt 
+    --models stage.analytics
+    --target stage_analytics 
+    --project-dir /usr/app/dbt/data_platform
+    """
+    
+    dbt_analytics_run_task = DockerOperator(
+        task_id="transform_DBT_stage_analytics_layer",
+        image="dbt-spark:f5bf2ec",
+        command=dbt_analytics_run_command,
+        mounts=[
+                Mount(
+                    source=f"{projects_dir}/seventh_art_analytics/transform",
+                    target="/usr/app/dbt",
+                    type="bind",
+                )
+            ],
+        network_mode="seventh_art_analytics_iceberg_net",
+        docker_url="unix://var/run/docker.sock",
+        auto_remove=True,
+        tty=True,
+        mount_tmp_dir=False,
+    )
+
+     ############################################
+    # Step 8: Data Validation Analytics layer #
+    ############################################
+    dbt_analytics_validation_command = """test
+    --profiles-dir /usr/app/dbt
+    --models stage.analytics
+    --target stage_analytics 
+    --project-dir /usr/app/dbt/data_platform
+    """
+    
+    dbt_analytics_validation_task = DockerOperator(
+        task_id="transform_DBT_data_quality_check_stage_analytics_layer",
+        image="dbt-spark:f5bf2ec",
+        command=dbt_analytics_validation_command,
+        mounts=[
+                Mount(
+                    source=f"{projects_dir}/seventh_art_analytics/transform",
+                    target="/usr/app/dbt",
+                    type="bind",
+                )
+            ],
+        network_mode="seventh_art_analytics_iceberg_net",
+        docker_url="unix://var/run/docker.sock",
+        auto_remove=True,
+        tty=True,
+        mount_tmp_dir=False,
+    )
+
+
+    ############################################
+    # Step 9: Retry whole DAG on validation failure
     ############################################
 
     wait_30_minutes = TimeDeltaSensor(
@@ -281,11 +340,13 @@ with DAG(
         dbt_deps_task >> \
         dbt_seed_task >> \
         dbt_canonical_run_task >> \
-        dbt_canonical_validation_task
-
+        dbt_canonical_validation_task >> \
+        dbt_analytics_run_task >> \
+        dbt_analytics_validation_task
+        
     # Success path → reset retry counter
-    dbt_canonical_validation_task >> reset_retry_counter
+    dbt_analytics_validation_task >> reset_retry_counter
 
     # Failure path → wait → retry DAG
-    dbt_canonical_validation_task >> wait_30_minutes
+    dbt_analytics_validation_task >> wait_30_minutes
     wait_30_minutes >> check_retry_limit >> restart_dag
