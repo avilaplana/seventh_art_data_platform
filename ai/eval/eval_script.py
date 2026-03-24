@@ -5,7 +5,7 @@ import json
 import time
 
 # API endpoint
-url = "http://localhost:8000/query"
+url = "http://localhost:8001/query"
 
 # Model & version
 model = "qwen2.5-coder"

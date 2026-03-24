@@ -8,11 +8,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6050,
       "generated_tokens": 81,
-      "tokens_per_second": 40.91,
-      "total_time_sec": 5.18,
-      "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 3.07,
-      "generation_time_sec": 1.98
+      "tokens_per_second": 45.6,
+      "total_time_sec": 19.05,
+      "load_time_sec": 3.04,
+      "prompt_processing_time_sec": 14.18,
+      "generation_time_sec": 1.78
     },
     "sql_expected": "SELECT primary_title, average_rating\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'movie'\n  AND release_year = 2020\n  AND average_rating IS NOT NULL\nORDER BY average_rating DESC\nLIMIT 10;\n"
   },
@@ -25,28 +25,28 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6058,
       "generated_tokens": 78,
-      "tokens_per_second": 43.69,
-      "total_time_sec": 2.11,
+      "tokens_per_second": 46.07,
+      "total_time_sec": 2.04,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.22,
-      "generation_time_sec": 1.79
+      "prompt_processing_time_sec": 0.23,
+      "generation_time_sec": 1.69
     },
     "sql_expected": "SELECT primary_title, average_rating\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'movie'\n  AND release_year = 1999\n  AND average_rating >= 8;\n"
   },
   {
     "id": "simple_03",
     "question": "Find the details of the movie titled 'Inception'.",
-    "sql_generated": "SELECT t.primary_title, t.original_title, t.title_type_name, t.release_year, t.duration_minutes, t.average_rating, t.number_of_votes\nFROM demo.stage_analytics.dim_title t\nWHERE t.primary_title = 'Inception' AND t.title_type_name = 'movie' LIMIT 10;",
+    "sql_generated": "SELECT t.primary_title, t.original_title, t.title_type_name, t.release_year, t.duration_minutes, t.average_rating, t.number_of_votes\nFROM demo.stage_analytics.dim_title t\nWHERE t.primary_title = 'Inception' LIMIT 10",
     "error": null,
     "metrics": {
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6046,
-      "generated_tokens": 59,
-      "tokens_per_second": 43.34,
-      "total_time_sec": 1.78,
-      "load_time_sec": 0.07,
-      "prompt_processing_time_sec": 0.33,
-      "generation_time_sec": 1.36
+      "generated_tokens": 50,
+      "tokens_per_second": 46.04,
+      "total_time_sec": 1.42,
+      "load_time_sec": 0.08,
+      "prompt_processing_time_sec": 0.23,
+      "generation_time_sec": 1.09
     },
     "sql_expected": "SELECT title_id, primary_title, original_title, title_type_name, release_year,\n       duration_minutes, average_rating, number_of_votes\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'movie'\n  AND primary_title = 'Inception';\n"
   },
@@ -59,28 +59,28 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6051,
       "generated_tokens": 40,
-      "tokens_per_second": 44.41,
-      "total_time_sec": 1.22,
+      "tokens_per_second": 46.31,
+      "total_time_sec": 1.09,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.21,
-      "generation_time_sec": 0.9
+      "prompt_processing_time_sec": 0.12,
+      "generation_time_sec": 0.86
     },
     "sql_expected": "SELECT primary_title, release_year\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'movie'\n  AND release_year > 2015\n  AND is_adult = true;\n"
   },
   {
     "id": "simple_05",
     "question": "Show all movies that have a runtime longer than 150 minutes.",
-    "sql_generated": "SELECT primary_title, duration_minutes\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'movie'\n  AND duration_minutes > 150 LIMIT 10;",
+    "sql_generated": "SELECT t.primary_title, t.original_title, t.duration_minutes\nFROM demo.stage_analytics.dim_title t\nWHERE t.title_type_name = 'movie'\n  AND t.duration_minutes > 150 LIMIT 10;",
     "error": null,
     "metrics": {
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6049,
-      "generated_tokens": 34,
-      "tokens_per_second": 44.62,
-      "total_time_sec": 0.97,
+      "generated_tokens": 43,
+      "tokens_per_second": 44.6,
+      "total_time_sec": 1.18,
       "load_time_sec": 0.08,
       "prompt_processing_time_sec": 0.1,
-      "generation_time_sec": 0.76
+      "generation_time_sec": 0.96
     },
     "sql_expected": "SELECT primary_title, duration_minutes\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'movie'\n  AND duration_minutes > 150;\n"
   },
@@ -93,11 +93,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6045,
       "generated_tokens": 55,
-      "tokens_per_second": 44.12,
-      "total_time_sec": 1.47,
-      "load_time_sec": 0.08,
+      "tokens_per_second": 44.85,
+      "total_time_sec": 1.46,
+      "load_time_sec": 0.09,
       "prompt_processing_time_sec": 0.11,
-      "generation_time_sec": 1.25
+      "generation_time_sec": 1.23
     },
     "sql_expected": "SELECT DISTINCT t.primary_title\nFROM demo.stage_analytics.fact_title_release r\nJOIN demo.stage_analytics.dim_title t ON r.title_id = t.title_id\nWHERE r.region_name = 'Spain'\n  AND r.language_name = 'Spanish';\n"
   },
@@ -110,11 +110,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6044,
       "generated_tokens": 28,
-      "tokens_per_second": 44.79,
-      "total_time_sec": 0.94,
+      "tokens_per_second": 47.24,
+      "total_time_sec": 0.93,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.21,
-      "generation_time_sec": 0.63
+      "prompt_processing_time_sec": 0.23,
+      "generation_time_sec": 0.59
     },
     "sql_expected": "SELECT primary_title\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'movie'\n  AND average_rating IS NULL;\n"
   },
@@ -127,11 +127,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6053,
       "generated_tokens": 34,
-      "tokens_per_second": 44.71,
-      "total_time_sec": 0.97,
+      "tokens_per_second": 46.75,
+      "total_time_sec": 0.94,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.11,
-      "generation_time_sec": 0.76
+      "prompt_processing_time_sec": 0.1,
+      "generation_time_sec": 0.73
     },
     "sql_expected": "SELECT primary_title, release_year\nFROM demo.stage_analytics.dim_title\nWHERE release_year = 2023;\n"
   },
@@ -144,11 +144,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6050,
       "generated_tokens": 24,
-      "tokens_per_second": 45.25,
-      "total_time_sec": 0.74,
+      "tokens_per_second": 47.61,
+      "total_time_sec": 0.71,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.11,
-      "generation_time_sec": 0.53
+      "prompt_processing_time_sec": 0.1,
+      "generation_time_sec": 0.5
     },
     "sql_expected": "SELECT primary_title, release_year\nFROM demo.stage_analytics.dim_title\nORDER BY release_year ASC\nLIMIT 20;\n"
   },
@@ -161,11 +161,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6047,
       "generated_tokens": 29,
-      "tokens_per_second": 42.15,
-      "total_time_sec": 1.01,
+      "tokens_per_second": 47.09,
+      "total_time_sec": 0.97,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.22,
-      "generation_time_sec": 0.69
+      "prompt_processing_time_sec": 0.25,
+      "generation_time_sec": 0.62
     },
     "sql_expected": "SELECT primary_title\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'movie'\n  AND LOWER(primary_title) LIKE '%star%';\n"
   },
@@ -177,12 +177,12 @@
     "metrics": {
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6052,
-      "generated_tokens": 74,
-      "tokens_per_second": 43.31,
-      "total_time_sec": 1.93,
+      "generated_tokens": 78,
+      "tokens_per_second": 46.21,
+      "total_time_sec": 1.91,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.11,
-      "generation_time_sec": 1.71
+      "prompt_processing_time_sec": 0.1,
+      "generation_time_sec": 1.69
     },
     "sql_expected": "SELECT genre_name, ROUND(AVG(average_rating), 2) AS avg_rating\nFROM demo.stage_analytics.fact_title_genre_flat\nWHERE title_type_name = 'movie'\n  AND release_year > 2010\n  AND average_rating IS NOT NULL\nGROUP BY genre_name;\n"
   },
@@ -195,11 +195,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6048,
       "generated_tokens": 78,
-      "tokens_per_second": 43.65,
-      "total_time_sec": 2.02,
+      "tokens_per_second": 46.3,
+      "total_time_sec": 1.92,
       "load_time_sec": 0.08,
       "prompt_processing_time_sec": 0.12,
-      "generation_time_sec": 1.79
+      "generation_time_sec": 1.68
     },
     "sql_expected": "SELECT t.primary_title, f.average_rating\nFROM demo.stage_analytics.fact_title_genre_flat f\nJOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\nWHERE f.title_type_name = 'movie'\n  AND f.genre_name = 'Action'\n  AND f.average_rating IS NOT NULL\nORDER BY f.average_rating DESC\nLIMIT 10;\n"
   },
@@ -212,11 +212,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6049,
       "generated_tokens": 56,
-      "tokens_per_second": 43.49,
-      "total_time_sec": 1.63,
-      "load_time_sec": 0.07,
+      "tokens_per_second": 46.55,
+      "total_time_sec": 1.55,
+      "load_time_sec": 0.08,
       "prompt_processing_time_sec": 0.24,
-      "generation_time_sec": 1.29
+      "generation_time_sec": 1.2
     },
     "sql_expected": "SELECT release_year, COUNT(DISTINCT title_id) AS movie_count\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'movie'\n  AND release_year >= 2000\nGROUP BY release_year\nORDER BY release_year;\n"
   },
@@ -229,11 +229,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6052,
       "generated_tokens": 79,
-      "tokens_per_second": 43.95,
-      "total_time_sec": 2.11,
-      "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.2,
-      "generation_time_sec": 1.8
+      "tokens_per_second": 46.21,
+      "total_time_sec": 2.07,
+      "load_time_sec": 0.1,
+      "prompt_processing_time_sec": 0.23,
+      "generation_time_sec": 1.71
     },
     "sql_expected": "SELECT primary_title, release_year, average_rating, number_of_votes\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'movie'\n  AND release_year <= YEAR(CURRENT_DATE())\nORDER BY release_year DESC\nLIMIT 20;\n"
   },
@@ -246,11 +246,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6051,
       "generated_tokens": 67,
-      "tokens_per_second": 43.81,
-      "total_time_sec": 1.89,
-      "load_time_sec": 0.09,
-      "prompt_processing_time_sec": 0.24,
-      "generation_time_sec": 1.53
+      "tokens_per_second": 45.68,
+      "total_time_sec": 1.85,
+      "load_time_sec": 0.08,
+      "prompt_processing_time_sec": 0.27,
+      "generation_time_sec": 1.47
     },
     "sql_expected": "SELECT f.title_id, t.primary_title\nFROM demo.stage_analytics.fact_title_genre_flat f\nJOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\nWHERE f.title_type_name = 'movie'\n  AND f.genre_name IN ('Action', 'Adventure')\nGROUP BY f.title_id, t.primary_title\nHAVING COUNT(DISTINCT f.genre_name) = 2;\n"
   },
@@ -263,28 +263,28 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6051,
       "generated_tokens": 82,
-      "tokens_per_second": 43.82,
-      "total_time_sec": 2.2,
+      "tokens_per_second": 45.33,
+      "total_time_sec": 2.14,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.21,
-      "generation_time_sec": 1.87
+      "prompt_processing_time_sec": 0.22,
+      "generation_time_sec": 1.81
     },
     "sql_expected": "SELECT t.primary_title, t.average_rating\nFROM demo.stage_analytics.fact_title_release r\nJOIN demo.stage_analytics.dim_title t ON r.title_id = t.title_id\nWHERE r.region_name = 'United States'\n  AND t.title_type_name = 'movie'\n  AND t.average_rating IS NOT NULL\nORDER BY t.average_rating DESC\nLIMIT 10;\n"
   },
   {
     "id": "medium_07",
     "question": "For each genre, show the number of movies with a rating below 5.",
-    "sql_generated": "SELECT g.genre_name, COUNT(DISTINCT f.title_id) AS movie_count\nFROM demo.stage_analytics.fact_title_genre_flat f\nJOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\nWHERE f.average_rating < 5\nGROUP BY g.genre_name LIMIT 10;",
-    "error": "java.sql.SQLException: org.apache.hive.service.cli.HiveSQLException: Error running query: [UNRESOLVED_COLUMN.WITH_SUGGESTION] org.apache.spark.sql.AnalysisException: [UNRESOLVED_COLUMN.WITH_SUGGESTION] A column or function parameter with name `g`.`genre_name` cannot be resolved. Did you mean one of the following? [`f`.`genre_name`, `t`.`decade`, `f`.`title_id`, `t`.`title_id`, `f`.`is_adult`].; line 1 pos 7;\n'GlobalLimit 10\n+- 'LocalLimit 10\n   +- 'Aggregate ['g.genre_name], ['g.genre_name, count(distinct title_id#17971) AS movie_count#17970L]\n      +- Filter (average_rating#17976 < cast(cast(5 as decimal(1,0)) as decimal(18,2)))\n         +- Join Inner, (title_id#17971 = title_id#17978)\n            :- SubqueryAlias f\n            :  +- SubqueryAlias demo.stage_analytics.fact_title_genre_flat\n            :     +- RelationV2[title_id#17971, genre_name#17972, title_type_name#17973, release_year#17974, is_adult#17975, average_rating#17976, number_of_votes#17977] demo.stage_analytics.fact_title_genre_flat demo.stage_analytics.fact_title_genre_flat\n            +- SubqueryAlias t\n               +- SubqueryAlias demo.stage_analytics.dim_title\n                  +- RelationV2[title_id#17978, primary_title#17979, original_title#17980, title_type_name#17981, release_year#17982, duration_minutes#17983, is_adult#17984, average_rating#17985, number_of_votes#17986, decade#17987, rating_bucket#17988] demo.stage_analytics.dim_title demo.stage_analytics.dim_title\n\n\tat org.apache.spark.sql.hive.thriftserver.HiveThriftServerErrors$.runningQueryError(HiveThriftServerErrors.scala:43)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation.org$apache$spark$sql$hive$thriftserver$SparkExecuteStatementOperation$$execute(SparkExecuteStatementOperation.scala:263)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation$$anon$2$$anon$3.$anonfun$run$2(SparkExecuteStatementOperation.scala:167)\n\tat scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)\n\tat org.apache.spark.sql.hive.thriftserver.SparkOperation.withLocalProperties(SparkOperation.scala:79)\n\tat org.apache.spark.sql.hive.thriftserver.SparkOperation.withLocalProperties$(SparkOperation.scala:63)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation.withLocalProperties(SparkExecuteStatementOperation.scala:41)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation$$anon$2$$anon$3.run(SparkExecuteStatementOperation.scala:167)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation$$anon$2$$anon$3.run(SparkExecuteStatementOperation.scala:162)\n\tat java.base/java.security.AccessController.doPrivileged(Unknown Source)\n\tat java.base/javax.security.auth.Subject.doAs(Unknown Source)\n\tat org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1878)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation$$anon$2.run(SparkExecuteStatementOperation.scala:176)\n\tat java.base/java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)\n\tat java.base/java.util.concurrent.FutureTask.run(Unknown Source)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)\n\tat java.base/java.lang.Thread.run(Unknown Source)\nCaused by: org.apache.spark.sql.AnalysisException: [UNRESOLVED_COLUMN.WITH_SUGGESTION] A column or function parameter with name `g`.`genre_name` cannot be resolved. Did you mean one of the following? [`f`.`genre_name`, `t`.`decade`, `f`.`title_id`, `t`.`title_id`, `f`.`is_adult`].; line 1 pos 7;\n'GlobalLimit 10\n+- 'LocalLimit 10\n   +- 'Aggregate ['g.genre_name], ['g.genre_name, count(distinct title_id#17971) AS movie_count#17970L]\n      +- Filter (average_rating#17976 < cast(cast(5 as decimal(1,0)) as decimal(18,2)))\n         +- Join Inner, (title_id#17971 = title_id#17978)\n            :- SubqueryAlias f\n            :  +- SubqueryAlias demo.stage_analytics.fact_title_genre_flat\n            :     +- RelationV2[title_id#17971, genre_name#17972, title_type_name#17973, release_year#17974, is_adult#17975, average_rating#17976, number_of_votes#17977] demo.stage_analytics.fact_title_genre_flat demo.stage_analytics.fact_title_genre_flat\n            +- SubqueryAlias t\n               +- SubqueryAlias demo.stage_analytics.dim_title\n                  +- RelationV2[title_id#17978, primary_title#17979, original_title#17980, title_type_name#17981, release_year#17982, duration_minutes#17983, is_adult#17984, average_rating#17985, number_of_votes#17986, decade#17987, rating_bucket#17988] demo.stage_analytics.dim_title demo.stage_analytics.dim_title\n\n\tat org.apache.spark.sql.errors.QueryCompilationErrors$.unresolvedAttributeError(QueryCompilationErrors.scala:306)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.org$apache$spark$sql$catalyst$analysis$CheckAnalysis$$failUnresolvedAttribute(CheckAnalysis.scala:141)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$6(CheckAnalysis.scala:299)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$6$adapted(CheckAnalysis.scala:297)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:244)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$5(CheckAnalysis.scala:297)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$5$adapted(CheckAnalysis.scala:297)\n\tat scala.collection.immutable.List.foreach(List.scala:431)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$2(CheckAnalysis.scala:297)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$2$adapted(CheckAnalysis.scala:215)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:244)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1$adapted(TreeNode.scala:243)\n\tat scala.collection.Iterator.foreach(Iterator.scala:943)\n\tat scala.collection.Iterator.foreach$(Iterator.scala:943)\n\tat scala.collection.AbstractIterator.foreach(Iterator.scala:1431)\n\tat scala.collection.IterableLike.foreach(IterableLike.scala:74)\n\tat scala.collection.IterableLike.foreach$(IterableLike.scala:73)\n\tat scala.collection.AbstractIterable.foreach(Iterable.scala:56)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1$adapted(TreeNode.scala:243)\n\tat scala.collection.Iterator.foreach(Iterator.scala:943)\n\tat scala.collection.Iterator.foreach$(Iterator.scala:943)\n\tat scala.collection.AbstractIterator.foreach(Iterator.scala:1431)\n\tat scala.collection.IterableLike.foreach(IterableLike.scala:74)\n\tat scala.collection.IterableLike.foreach$(IterableLike.scala:73)\n\tat scala.collection.AbstractIterable.foreach(Iterable.scala:56)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.checkAnalysis0(CheckAnalysis.scala:215)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.checkAnalysis0$(CheckAnalysis.scala:197)\n\tat org.apache.spark.sql.catalyst.analysis.Analyzer.checkAnalysis0(Analyzer.scala:202)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.checkAnalysis(CheckAnalysis.scala:193)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.checkAnalysis$(CheckAnalysis.scala:171)\n\tat org.apache.spark.sql.catalyst.analysis.Analyzer.checkAnalysis(Analyzer.scala:202)\n\tat org.apache.spark.sql.catalyst.analysis.Analyzer.$anonfun$executeAndCheck$1(Analyzer.scala:225)\n\tat org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper$.markInAnalyzer(AnalysisHelper.scala:330)\n\tat org.apache.spark.sql.catalyst.analysis.Analyzer.executeAndCheck(Analyzer.scala:222)\n\tat org.apache.spark.sql.execution.QueryExecution.$anonfun$analyzed$1(QueryExecution.scala:77)\n\tat org.apache.spark.sql.catalyst.QueryPlanningTracker.measurePhase(QueryPlanningTracker.scala:138)\n\tat org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$2(QueryExecution.scala:219)\n\tat org.apache.spark.sql.execution.QueryExecution$.withInternalError(QueryExecution.scala:546)\n\tat org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$1(QueryExecution.scala:219)\n\tat org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:900)\n\tat org.apache.spark.sql.execution.QueryExecution.executePhase(QueryExecution.scala:218)\n\tat org.apache.spark.sql.execution.QueryExecution.analyzed$lzycompute(QueryExecution.scala:77)\n\tat org.apache.spark.sql.execution.QueryExecution.analyzed(QueryExecution.scala:74)\n\tat org.apache.spark.sql.execution.QueryExecution.assertAnalyzed(QueryExecution.scala:66)\n\tat org.apache.spark.sql.Dataset$.$anonfun$ofRows$2(Dataset.scala:99)\n\tat org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:900)\n\tat org.apache.spark.sql.Dataset$.ofRows(Dataset.scala:97)\n\tat org.apache.spark.sql.SparkSession.$anonfun$sql$4(SparkSession.scala:691)\n\tat org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:900)\n\tat org.apache.spark.sql.SparkSession.sql(SparkSession.scala:682)\n\tat org.apache.spark.sql.SparkSession.sql(SparkSession.scala:713)\n\tat org.apache.spark.sql.SparkSession.sql(SparkSession.scala:744)\n\tat org.apache.spark.sql.SQLContext.sql(SQLContext.scala:651)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation.org$apache$spark$sql$hive$thriftserver$SparkExecuteStatementOperation$$execute(SparkExecuteStatementOperation.scala:228)\n\t... 16 more\n",
+    "sql_generated": "SELECT f.genre_name, COUNT(DISTINCT f.title_id) AS movie_count\nFROM demo.stage_analytics.fact_title_genre_flat f\nWHERE f.average_rating < 5\nGROUP BY f.genre_name LIMIT 10;",
+    "error": null,
     "metrics": {
       "model": "qwen2.5-coder:7b",
-      "prompt_tokens": 6049,
-      "generated_tokens": 61,
-      "tokens_per_second": 42.89,
-      "total_time_sec": 1.75,
-      "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.21,
-      "generation_time_sec": 1.42
+      "prompt_tokens": 8770,
+      "generated_tokens": 44,
+      "tokens_per_second": 44.94,
+      "total_time_sec": 8.05,
+      "load_time_sec": 0.05,
+      "prompt_processing_time_sec": 6.99,
+      "generation_time_sec": 0.98
     },
     "sql_expected": "SELECT genre_name, COUNT(DISTINCT title_id) AS low_rated_movies\nFROM demo.stage_analytics.fact_title_genre_flat\nWHERE title_type_name = 'movie'\n  AND average_rating < 5\nGROUP BY genre_name;\n"
   },
@@ -297,11 +297,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6058,
       "generated_tokens": 63,
-      "tokens_per_second": 44.18,
-      "total_time_sec": 1.63,
-      "load_time_sec": 0.07,
-      "prompt_processing_time_sec": 0.11,
-      "generation_time_sec": 1.43
+      "tokens_per_second": 46.39,
+      "total_time_sec": 1.69,
+      "load_time_sec": 0.08,
+      "prompt_processing_time_sec": 0.22,
+      "generation_time_sec": 1.36
     },
     "sql_expected": "SELECT primary_title, average_rating, number_of_votes\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'movie'\n  AND average_rating > 8\n  AND number_of_votes >= 10000;\n"
   },
@@ -314,11 +314,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6061,
       "generated_tokens": 87,
-      "tokens_per_second": 43.57,
-      "total_time_sec": 2.34,
-      "load_time_sec": 0.11,
-      "prompt_processing_time_sec": 0.2,
-      "generation_time_sec": 2.0
+      "tokens_per_second": 46.09,
+      "total_time_sec": 2.12,
+      "load_time_sec": 0.08,
+      "prompt_processing_time_sec": 0.12,
+      "generation_time_sec": 1.89
     },
     "sql_expected": "SELECT t.primary_title, f.average_rating\nFROM demo.stage_analytics.fact_title_genre_flat f\nJOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\nWHERE f.genre_name = 'Comedy'\n  AND f.title_type_name = 'movie'\n  AND f.release_year BETWEEN 2010 AND 2020\n  AND f.average_rating IS NOT NULL\nORDER BY f.average_rating DESC\nLIMIT 10;\n"
   },
@@ -331,11 +331,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6051,
       "generated_tokens": 60,
-      "tokens_per_second": 44.02,
-      "total_time_sec": 1.7,
+      "tokens_per_second": 46.27,
+      "total_time_sec": 1.66,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.23,
-      "generation_time_sec": 1.36
+      "prompt_processing_time_sec": 0.26,
+      "generation_time_sec": 1.3
     },
     "sql_expected": "SELECT release_year, COUNT(*) AS title_count, ROUND(AVG(average_rating), 2) AS avg_rating\nFROM demo.stage_analytics.dim_title\nWHERE average_rating IS NOT NULL\nGROUP BY release_year\nORDER BY release_year;\n"
   },
@@ -348,11 +348,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6070,
       "generated_tokens": 132,
-      "tokens_per_second": 43.39,
-      "total_time_sec": 3.47,
+      "tokens_per_second": 45.91,
+      "total_time_sec": 3.3,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.31,
-      "generation_time_sec": 3.04
+      "prompt_processing_time_sec": 0.3,
+      "generation_time_sec": 2.88
     },
     "sql_expected": "SELECT p.name, ROUND(AVG(f.average_rating), 2) AS avg_rating\nFROM demo.stage_analytics.fact_title_cast_crew f\nJOIN demo.stage_analytics.dim_person p ON f.person_id = p.person_id\nWHERE f.role_name IN ('actor', 'actress')\n  AND f.release_year >= YEAR(CURRENT_DATE()) - 5\n  AND f.average_rating IS NOT NULL\nGROUP BY p.name\nHAVING COUNT(*) >= 5\nORDER BY avg_rating DESC\nLIMIT 5;\n"
   },
@@ -365,11 +365,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6054,
       "generated_tokens": 119,
-      "tokens_per_second": 43.15,
-      "total_time_sec": 3.1,
+      "tokens_per_second": 45.65,
+      "total_time_sec": 2.94,
       "load_time_sec": 0.08,
       "prompt_processing_time_sec": 0.22,
-      "generation_time_sec": 2.76
+      "generation_time_sec": 2.61
     },
     "sql_expected": "SELECT genre_name, title_id, average_rating\nFROM (\n  SELECT genre_name, title_id, average_rating,\n         ROW_NUMBER() OVER (PARTITION BY genre_name ORDER BY average_rating DESC) AS rn\n  FROM demo.stage_analytics.fact_title_genre_flat\n  WHERE title_type_name = 'movie'\n    AND release_year >= YEAR(CURRENT_DATE()) - 10\n    AND average_rating IS NOT NULL\n) ranked\nWHERE rn <= 3;\n"
   },
@@ -382,11 +382,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6056,
       "generated_tokens": 124,
-      "tokens_per_second": 43.64,
-      "total_time_sec": 3.19,
+      "tokens_per_second": 45.81,
+      "total_time_sec": 3.05,
       "load_time_sec": 0.08,
       "prompt_processing_time_sec": 0.23,
-      "generation_time_sec": 2.84
+      "generation_time_sec": 2.71
     },
     "sql_expected": "SELECT p.name, ROUND(AVG(f.average_rating), 2) AS avg_rating\nFROM demo.stage_analytics.fact_title_cast_crew f\nJOIN demo.stage_analytics.dim_person p ON f.person_id = p.person_id\nJOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\nWHERE f.role_name = 'director'\n  AND f.average_rating IS NOT NULL\n  AND t.title_type_name = 'movie'\nGROUP BY p.name\nHAVING COUNT(DISTINCT f.title_id) >= 10\nORDER BY avg_rating DESC;\n"
   },
@@ -399,11 +399,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6053,
       "generated_tokens": 80,
-      "tokens_per_second": 43.57,
-      "total_time_sec": 2.16,
-      "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.21,
-      "generation_time_sec": 1.84
+      "tokens_per_second": 46.08,
+      "total_time_sec": 2.13,
+      "load_time_sec": 0.07,
+      "prompt_processing_time_sec": 0.29,
+      "generation_time_sec": 1.74
     },
     "sql_expected": "SELECT release_year, genre_name, avg_rating\nFROM (\n  SELECT release_year, genre_name,\n         ROUND(AVG(average_rating), 2) AS avg_rating,\n         ROW_NUMBER() OVER (PARTITION BY release_year ORDER BY AVG(average_rating) DESC) AS rn\n  FROM demo.stage_analytics.fact_title_genre_flat\n  WHERE release_year >= YEAR(CURRENT_DATE()) - 20\n    AND average_rating IS NOT NULL\n  GROUP BY release_year, genre_name\n) ranked\nWHERE rn = 1;\n"
   },
@@ -416,28 +416,28 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6054,
       "generated_tokens": 96,
-      "tokens_per_second": 43.49,
-      "total_time_sec": 2.53,
-      "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.21,
-      "generation_time_sec": 2.21
+      "tokens_per_second": 45.69,
+      "total_time_sec": 2.55,
+      "load_time_sec": 0.09,
+      "prompt_processing_time_sec": 0.32,
+      "generation_time_sec": 2.1
     },
     "sql_expected": "SELECT p.name, SUM(f.number_of_votes) AS total_votes\nFROM demo.stage_analytics.fact_title_cast_crew f\nJOIN demo.stage_analytics.dim_person p ON f.person_id = p.person_id\nJOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\nWHERE f.role_name IN ('actor', 'actress')\n  AND t.title_type_name = 'movie'\n  AND f.number_of_votes IS NOT NULL\nGROUP BY p.name\nORDER BY total_votes DESC\nLIMIT 10;\n"
   },
   {
     "id": "hard_06",
     "question": "For each genre, compute the share of movies that are adult content and show only genres where this share is above 20%.",
-    "sql_generated": "SELECT g.genre_name, ROUND(SUM(CASE WHEN t.is_adult THEN 1 ELSE 0 END) * 100.0 / COUNT(t.title_id), 2) AS adult_share\nFROM demo.stage_analytics.fact_title_genre_flat g\nJOIN demo.stage_analytics.dim_title t ON g.title_id = t.title_id\nGROUP BY g.genre_name\nHAVING adult_share > 20 LIMIT 10;",
+    "sql_generated": "SELECT g.genre_name, ROUND(SUM(CASE WHEN t.is_adult THEN 1 ELSE 0 END) * 100.0 / COUNT(t.title_id), 2) AS adult_share\nFROM demo.stage_analytics.fact_title_genre_flat g\nJOIN demo.stage_analytics.dim_title t ON g.title_id = t.title_id\nWHERE g.title_type_name = 'movie'\nGROUP BY g.genre_name\nHAVING adult_share > 20 LIMIT 10;",
     "error": null,
     "metrics": {
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6060,
-      "generated_tokens": 88,
-      "tokens_per_second": 43.54,
-      "total_time_sec": 2.4,
-      "load_time_sec": 0.07,
-      "prompt_processing_time_sec": 0.28,
-      "generation_time_sec": 2.02
+      "generated_tokens": 97,
+      "tokens_per_second": 45.89,
+      "total_time_sec": 2.66,
+      "load_time_sec": 0.08,
+      "prompt_processing_time_sec": 0.42,
+      "generation_time_sec": 2.11
     },
     "sql_expected": "SELECT genre_name,\n       SUM(CASE WHEN is_adult = true THEN 1 ELSE 0 END) / COUNT(*) AS adult_share\nFROM demo.stage_analytics.fact_title_genre_flat\nWHERE title_type_name = 'movie'\nGROUP BY genre_name\nHAVING SUM(CASE WHEN is_adult = true THEN 1 ELSE 0 END) / COUNT(*) > 0.2;\n"
   },
@@ -450,11 +450,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6061,
       "generated_tokens": 160,
-      "tokens_per_second": 43.23,
-      "total_time_sec": 4.12,
-      "load_time_sec": 0.09,
-      "prompt_processing_time_sec": 0.28,
-      "generation_time_sec": 3.7
+      "tokens_per_second": 44.31,
+      "total_time_sec": 4.04,
+      "load_time_sec": 0.08,
+      "prompt_processing_time_sec": 0.29,
+      "generation_time_sec": 3.61
     },
     "sql_expected": "SELECT t.primary_title, t.release_year\nFROM demo.stage_analytics.fact_title_cast_crew f\nJOIN demo.stage_analytics.dim_person p ON f.person_id = p.person_id\nJOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\nWHERE p.name IN ('Leonardo DiCaprio', 'Kate Winslet')\n  AND t.title_type_name = 'movie'\nGROUP BY t.title_id, t.primary_title, t.release_year\nHAVING COUNT(DISTINCT p.name) = 2;\n"
   },
@@ -467,28 +467,28 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6074,
       "generated_tokens": 175,
-      "tokens_per_second": 42.93,
-      "total_time_sec": 4.6,
+      "tokens_per_second": 45.81,
+      "total_time_sec": 4.41,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.4,
-      "generation_time_sec": 4.08
+      "prompt_processing_time_sec": 0.47,
+      "generation_time_sec": 3.82
     },
     "sql_expected": "SELECT p.name,\n       SUM(CASE WHEN f.release_year < 2000 THEN 1 ELSE 0 END) AS before_2000,\n       SUM(CASE WHEN f.release_year >= 2000 THEN 1 ELSE 0 END) AS after_2000\nFROM demo.stage_analytics.fact_title_cast_crew f\nJOIN demo.stage_analytics.dim_person p ON f.person_id = p.person_id\nJOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\nWHERE f.role_name IN ('actor', 'actress')\n  AND t.title_type_name = 'movie'\nGROUP BY p.name\nHAVING before_2000 >= 5 AND after_2000 >= 5;\n"
   },
   {
     "id": "hard_09",
     "question": "Find the top 10 movies that improved the most in rating compared to the average rating of movies released in the same year and genre.",
-    "sql_generated": "SELECT t.primary_title, f.average_rating, f.average_rating - AVG(f.average_rating) OVER (PARTITION BY f.genre_name, f.release_year) AS rating_improvement\nFROM demo.stage_analytics.fact_title_genre_flat f\nJOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\nWHERE f.title_type_name = 'movie'\n  AND f.average_rating IS NOT NULL\nORDER BY rating_improvement DESC\nLIMIT 10;",
+    "sql_generated": "SELECT t.primary_title, f.average_rating, (f.average_rating - AVG(f.average_rating) OVER (PARTITION BY f.genre_name, f.release_year)) AS rating_improvement\nFROM demo.stage_analytics.fact_title_genre_flat f\nJOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\nWHERE f.title_type_name = 'movie'\n  AND f.average_rating IS NOT NULL\nORDER BY rating_improvement DESC\nLIMIT 10;",
     "error": null,
     "metrics": {
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6062,
-      "generated_tokens": 98,
-      "tokens_per_second": 43.71,
-      "total_time_sec": 2.7,
-      "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.34,
-      "generation_time_sec": 2.24
+      "generated_tokens": 99,
+      "tokens_per_second": 44.98,
+      "total_time_sec": 2.85,
+      "load_time_sec": 0.09,
+      "prompt_processing_time_sec": 0.53,
+      "generation_time_sec": 2.2
     },
     "sql_expected": "WITH yearly_genre_avg AS (\n  SELECT release_year, genre_name, AVG(average_rating) AS avg_rating\n  FROM demo.stage_analytics.fact_title_genre_flat\n  WHERE title_type_name = 'movie'\n    AND average_rating IS NOT NULL\n  GROUP BY release_year, genre_name\n)\nSELECT t.primary_title, f.release_year,\n       ROUND(f.average_rating - yga.avg_rating, 2) AS rating_improvement\nFROM demo.stage_analytics.fact_title_genre_flat f\nJOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\nJOIN yearly_genre_avg yga ON f.release_year = yga.release_year AND f.genre_name = yga.genre_name\nWHERE f.title_type_name = 'movie'\n  AND f.average_rating IS NOT NULL\nORDER BY rating_improvement DESC\nLIMIT 10;\n"
   },
@@ -501,11 +501,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6071,
       "generated_tokens": 191,
-      "tokens_per_second": 43.19,
-      "total_time_sec": 4.85,
+      "tokens_per_second": 45.01,
+      "total_time_sec": 4.67,
       "load_time_sec": 0.08,
       "prompt_processing_time_sec": 0.29,
-      "generation_time_sec": 4.42
+      "generation_time_sec": 4.24
     },
     "sql_expected": "SELECT release_year, name, avg_rating\nFROM (\n  SELECT f.release_year, p.name,\n         ROUND(AVG(f.average_rating), 2) AS avg_rating,\n         ROW_NUMBER() OVER (PARTITION BY f.release_year ORDER BY AVG(f.average_rating) DESC) AS rn\n  FROM demo.stage_analytics.fact_title_cast_crew f\n  JOIN demo.stage_analytics.dim_person p ON f.person_id = p.person_id\n  JOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\n  WHERE f.role_name = 'director'\n    AND f.release_year >= YEAR(CURRENT_DATE()) - 5\n    AND f.average_rating IS NOT NULL\n    AND t.title_type_name = 'movie'\n  GROUP BY f.release_year, p.name\n  HAVING COUNT(DISTINCT f.title_id) >= 3\n) ranked\nWHERE rn <= 3;\n"
   },
@@ -518,11 +518,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6048,
       "generated_tokens": 70,
-      "tokens_per_second": 43.7,
-      "total_time_sec": 1.92,
+      "tokens_per_second": 46.45,
+      "total_time_sec": 1.87,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.21,
-      "generation_time_sec": 1.6
+      "prompt_processing_time_sec": 0.25,
+      "generation_time_sec": 1.51
     },
     "sql_expected": "SELECT primary_title, average_rating, number_of_votes\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'tvSeries'\n  AND average_rating IS NOT NULL\nORDER BY average_rating DESC\nLIMIT 10;\n"
   },
@@ -535,11 +535,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6049,
       "generated_tokens": 56,
-      "tokens_per_second": 43.93,
-      "total_time_sec": 1.61,
+      "tokens_per_second": 46.8,
+      "total_time_sec": 1.54,
       "load_time_sec": 0.08,
       "prompt_processing_time_sec": 0.23,
-      "generation_time_sec": 1.27
+      "generation_time_sec": 1.2
     },
     "sql_expected": "SELECT episode_primary_title, season_number, episode_number, episode_average_rating\nFROM demo.stage_analytics.fact_episode\nWHERE LOWER(series_primary_title) = 'breaking bad'\n  AND episode_average_rating IS NOT NULL\nORDER BY episode_average_rating DESC\nLIMIT 5;\n"
   },
@@ -552,11 +552,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6048,
       "generated_tokens": 56,
-      "tokens_per_second": 44.02,
+      "tokens_per_second": 46.22,
       "total_time_sec": 1.59,
-      "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.21,
-      "generation_time_sec": 1.27
+      "load_time_sec": 0.11,
+      "prompt_processing_time_sec": 0.23,
+      "generation_time_sec": 1.21
     },
     "sql_expected": "SELECT season_number, ROUND(AVG(episode_average_rating), 2) AS avg_episode_rating\nFROM demo.stage_analytics.fact_episode\nWHERE LOWER(series_primary_title) = 'game of thrones'\n  AND episode_average_rating IS NOT NULL\nGROUP BY season_number\nORDER BY season_number;\n"
   },
@@ -569,11 +569,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6052,
       "generated_tokens": 55,
-      "tokens_per_second": 44.02,
-      "total_time_sec": 1.47,
+      "tokens_per_second": 46.45,
+      "total_time_sec": 1.42,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.11,
-      "generation_time_sec": 1.25
+      "prompt_processing_time_sec": 0.13,
+      "generation_time_sec": 1.18
     },
     "sql_expected": "SELECT primary_title, release_year, average_rating\nFROM demo.stage_analytics.dim_title\nWHERE decade = '1990s'\n  AND average_rating > 8\nORDER BY average_rating DESC;\n"
   },
@@ -586,11 +586,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6043,
       "generated_tokens": 42,
-      "tokens_per_second": 44.2,
-      "total_time_sec": 1.17,
+      "tokens_per_second": 46.64,
+      "total_time_sec": 1.12,
       "load_time_sec": 0.08,
       "prompt_processing_time_sec": 0.11,
-      "generation_time_sec": 0.95
+      "generation_time_sec": 0.9
     },
     "sql_expected": "SELECT rating_bucket, COUNT(*) AS movie_count\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'movie'\n  AND rating_bucket IS NOT NULL\nGROUP BY rating_bucket\nORDER BY rating_bucket;\n"
   },
@@ -598,33 +598,33 @@
     "id": "analytics_06",
     "question": "For each decade, what is the average rating and total number of movies?",
     "sql_generated": "SELECT decade, AVG(average_rating) AS avg_rating, COUNT(DISTINCT title_id) AS movie_count\nFROM demo.stage_analytics.fact_title_genre_flat\nWHERE title_type_name = 'movie'\n  AND average_rating IS NOT NULL\nGROUP BY decade\nORDER BY decade LIMIT 10;",
-    "error": "java.sql.SQLException: org.apache.hive.service.cli.HiveSQLException: Error running query: [UNRESOLVED_COLUMN.WITH_SUGGESTION] org.apache.spark.sql.AnalysisException: [UNRESOLVED_COLUMN.WITH_SUGGESTION] A column or function parameter with name `decade` cannot be resolved. Did you mean one of the following? [`is_adult`, `title_id`, `genre_name`, `release_year`, `average_rating`].; line 1 pos 7;\n'GlobalLimit 10\n+- 'LocalLimit 10\n   +- 'Sort ['decade ASC NULLS FIRST], true\n      +- 'Aggregate ['decade], ['decade, avg(average_rating#19069) AS avg_rating#19062, count(distinct title_id#19064) AS movie_count#19063L]\n         +- Filter ((title_type_name#19066 = movie) AND isnotnull(average_rating#19069))\n            +- SubqueryAlias demo.stage_analytics.fact_title_genre_flat\n               +- RelationV2[title_id#19064, genre_name#19065, title_type_name#19066, release_year#19067, is_adult#19068, average_rating#19069, number_of_votes#19070] demo.stage_analytics.fact_title_genre_flat demo.stage_analytics.fact_title_genre_flat\n\n\tat org.apache.spark.sql.hive.thriftserver.HiveThriftServerErrors$.runningQueryError(HiveThriftServerErrors.scala:43)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation.org$apache$spark$sql$hive$thriftserver$SparkExecuteStatementOperation$$execute(SparkExecuteStatementOperation.scala:263)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation$$anon$2$$anon$3.$anonfun$run$2(SparkExecuteStatementOperation.scala:167)\n\tat scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)\n\tat org.apache.spark.sql.hive.thriftserver.SparkOperation.withLocalProperties(SparkOperation.scala:79)\n\tat org.apache.spark.sql.hive.thriftserver.SparkOperation.withLocalProperties$(SparkOperation.scala:63)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation.withLocalProperties(SparkExecuteStatementOperation.scala:41)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation$$anon$2$$anon$3.run(SparkExecuteStatementOperation.scala:167)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation$$anon$2$$anon$3.run(SparkExecuteStatementOperation.scala:162)\n\tat java.base/java.security.AccessController.doPrivileged(Unknown Source)\n\tat java.base/javax.security.auth.Subject.doAs(Unknown Source)\n\tat org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1878)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation$$anon$2.run(SparkExecuteStatementOperation.scala:176)\n\tat java.base/java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)\n\tat java.base/java.util.concurrent.FutureTask.run(Unknown Source)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)\n\tat java.base/java.lang.Thread.run(Unknown Source)\nCaused by: org.apache.spark.sql.AnalysisException: [UNRESOLVED_COLUMN.WITH_SUGGESTION] A column or function parameter with name `decade` cannot be resolved. Did you mean one of the following? [`is_adult`, `title_id`, `genre_name`, `release_year`, `average_rating`].; line 1 pos 7;\n'GlobalLimit 10\n+- 'LocalLimit 10\n   +- 'Sort ['decade ASC NULLS FIRST], true\n      +- 'Aggregate ['decade], ['decade, avg(average_rating#19069) AS avg_rating#19062, count(distinct title_id#19064) AS movie_count#19063L]\n         +- Filter ((title_type_name#19066 = movie) AND isnotnull(average_rating#19069))\n            +- SubqueryAlias demo.stage_analytics.fact_title_genre_flat\n               +- RelationV2[title_id#19064, genre_name#19065, title_type_name#19066, release_year#19067, is_adult#19068, average_rating#19069, number_of_votes#19070] demo.stage_analytics.fact_title_genre_flat demo.stage_analytics.fact_title_genre_flat\n\n\tat org.apache.spark.sql.errors.QueryCompilationErrors$.unresolvedAttributeError(QueryCompilationErrors.scala:306)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.org$apache$spark$sql$catalyst$analysis$CheckAnalysis$$failUnresolvedAttribute(CheckAnalysis.scala:141)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$6(CheckAnalysis.scala:299)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$6$adapted(CheckAnalysis.scala:297)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:244)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$5(CheckAnalysis.scala:297)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$5$adapted(CheckAnalysis.scala:297)\n\tat scala.collection.immutable.List.foreach(List.scala:431)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$2(CheckAnalysis.scala:297)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$2$adapted(CheckAnalysis.scala:215)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:244)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1$adapted(TreeNode.scala:243)\n\tat scala.collection.Iterator.foreach(Iterator.scala:943)\n\tat scala.collection.Iterator.foreach$(Iterator.scala:943)\n\tat scala.collection.AbstractIterator.foreach(Iterator.scala:1431)\n\tat scala.collection.IterableLike.foreach(IterableLike.scala:74)\n\tat scala.collection.IterableLike.foreach$(IterableLike.scala:73)\n\tat scala.collection.AbstractIterable.foreach(Iterable.scala:56)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1$adapted(TreeNode.scala:243)\n\tat scala.collection.Iterator.foreach(Iterator.scala:943)\n\tat scala.collection.Iterator.foreach$(Iterator.scala:943)\n\tat scala.collection.AbstractIterator.foreach(Iterator.scala:1431)\n\tat scala.collection.IterableLike.foreach(IterableLike.scala:74)\n\tat scala.collection.IterableLike.foreach$(IterableLike.scala:73)\n\tat scala.collection.AbstractIterable.foreach(Iterable.scala:56)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1$adapted(TreeNode.scala:243)\n\tat scala.collection.Iterator.foreach(Iterator.scala:943)\n\tat scala.collection.Iterator.foreach$(Iterator.scala:943)\n\tat scala.collection.AbstractIterator.foreach(Iterator.scala:1431)\n\tat scala.collection.IterableLike.foreach(IterableLike.scala:74)\n\tat scala.collection.IterableLike.foreach$(IterableLike.scala:73)\n\tat scala.collection.AbstractIterable.foreach(Iterable.scala:56)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.checkAnalysis0(CheckAnalysis.scala:215)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.checkAnalysis0$(CheckAnalysis.scala:197)\n\tat org.apache.spark.sql.catalyst.analysis.Analyzer.checkAnalysis0(Analyzer.scala:202)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.checkAnalysis(CheckAnalysis.scala:193)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.checkAnalysis$(CheckAnalysis.scala:171)\n\tat org.apache.spark.sql.catalyst.analysis.Analyzer.checkAnalysis(Analyzer.scala:202)\n\tat org.apache.spark.sql.catalyst.analysis.Analyzer.$anonfun$executeAndCheck$1(Analyzer.scala:225)\n\tat org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper$.markInAnalyzer(AnalysisHelper.scala:330)\n\tat org.apache.spark.sql.catalyst.analysis.Analyzer.executeAndCheck(Analyzer.scala:222)\n\tat org.apache.spark.sql.execution.QueryExecution.$anonfun$analyzed$1(QueryExecution.scala:77)\n\tat org.apache.spark.sql.catalyst.QueryPlanningTracker.measurePhase(QueryPlanningTracker.scala:138)\n\tat org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$2(QueryExecution.scala:219)\n\tat org.apache.spark.sql.execution.QueryExecution$.withInternalError(QueryExecution.scala:546)\n\tat org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$1(QueryExecution.scala:219)\n\tat org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:900)\n\tat org.apache.spark.sql.execution.QueryExecution.executePhase(QueryExecution.scala:218)\n\tat org.apache.spark.sql.execution.QueryExecution.analyzed$lzycompute(QueryExecution.scala:77)\n\tat org.apache.spark.sql.execution.QueryExecution.analyzed(QueryExecution.scala:74)\n\tat org.apache.spark.sql.execution.QueryExecution.assertAnalyzed(QueryExecution.scala:66)\n\tat org.apache.spark.sql.Dataset$.$anonfun$ofRows$2(Dataset.scala:99)\n\tat org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:900)\n\tat org.apache.spark.sql.Dataset$.ofRows(Dataset.scala:97)\n\tat org.apache.spark.sql.SparkSession.$anonfun$sql$4(SparkSession.scala:691)\n\tat org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:900)\n\tat org.apache.spark.sql.SparkSession.sql(SparkSession.scala:682)\n\tat org.apache.spark.sql.SparkSession.sql(SparkSession.scala:713)\n\tat org.apache.spark.sql.SparkSession.sql(SparkSession.scala:744)\n\tat org.apache.spark.sql.SQLContext.sql(SQLContext.scala:651)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation.org$apache$spark$sql$hive$thriftserver$SparkExecuteStatementOperation$$execute(SparkExecuteStatementOperation.scala:228)\n\t... 16 more\n",
+    "error": "java.sql.SQLException: org.apache.hive.service.cli.HiveSQLException: Error running query: [UNRESOLVED_COLUMN.WITH_SUGGESTION] org.apache.spark.sql.AnalysisException: [UNRESOLVED_COLUMN.WITH_SUGGESTION] A column or function parameter with name `decade` cannot be resolved. Did you mean one of the following? [`is_adult`, `title_id`, `genre_name`, `release_year`, `average_rating`].; line 1 pos 7;\n'GlobalLimit 10\n+- 'LocalLimit 10\n   +- 'Sort ['decade ASC NULLS FIRST], true\n      +- 'Aggregate ['decade], ['decade, avg(average_rating#11418) AS avg_rating#11411, count(distinct title_id#11413) AS movie_count#11412L]\n         +- Filter ((title_type_name#11415 = movie) AND isnotnull(average_rating#11418))\n            +- SubqueryAlias demo.stage_analytics.fact_title_genre_flat\n               +- RelationV2[title_id#11413, genre_name#11414, title_type_name#11415, release_year#11416, is_adult#11417, average_rating#11418, number_of_votes#11419] demo.stage_analytics.fact_title_genre_flat demo.stage_analytics.fact_title_genre_flat\n\n\tat org.apache.spark.sql.hive.thriftserver.HiveThriftServerErrors$.runningQueryError(HiveThriftServerErrors.scala:43)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation.org$apache$spark$sql$hive$thriftserver$SparkExecuteStatementOperation$$execute(SparkExecuteStatementOperation.scala:263)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation$$anon$2$$anon$3.$anonfun$run$2(SparkExecuteStatementOperation.scala:167)\n\tat scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23)\n\tat org.apache.spark.sql.hive.thriftserver.SparkOperation.withLocalProperties(SparkOperation.scala:79)\n\tat org.apache.spark.sql.hive.thriftserver.SparkOperation.withLocalProperties$(SparkOperation.scala:63)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation.withLocalProperties(SparkExecuteStatementOperation.scala:41)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation$$anon$2$$anon$3.run(SparkExecuteStatementOperation.scala:167)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation$$anon$2$$anon$3.run(SparkExecuteStatementOperation.scala:162)\n\tat java.base/java.security.AccessController.doPrivileged(Unknown Source)\n\tat java.base/javax.security.auth.Subject.doAs(Unknown Source)\n\tat org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1878)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation$$anon$2.run(SparkExecuteStatementOperation.scala:176)\n\tat java.base/java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)\n\tat java.base/java.util.concurrent.FutureTask.run(Unknown Source)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)\n\tat java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)\n\tat java.base/java.lang.Thread.run(Unknown Source)\nCaused by: org.apache.spark.sql.AnalysisException: [UNRESOLVED_COLUMN.WITH_SUGGESTION] A column or function parameter with name `decade` cannot be resolved. Did you mean one of the following? [`is_adult`, `title_id`, `genre_name`, `release_year`, `average_rating`].; line 1 pos 7;\n'GlobalLimit 10\n+- 'LocalLimit 10\n   +- 'Sort ['decade ASC NULLS FIRST], true\n      +- 'Aggregate ['decade], ['decade, avg(average_rating#11418) AS avg_rating#11411, count(distinct title_id#11413) AS movie_count#11412L]\n         +- Filter ((title_type_name#11415 = movie) AND isnotnull(average_rating#11418))\n            +- SubqueryAlias demo.stage_analytics.fact_title_genre_flat\n               +- RelationV2[title_id#11413, genre_name#11414, title_type_name#11415, release_year#11416, is_adult#11417, average_rating#11418, number_of_votes#11419] demo.stage_analytics.fact_title_genre_flat demo.stage_analytics.fact_title_genre_flat\n\n\tat org.apache.spark.sql.errors.QueryCompilationErrors$.unresolvedAttributeError(QueryCompilationErrors.scala:306)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.org$apache$spark$sql$catalyst$analysis$CheckAnalysis$$failUnresolvedAttribute(CheckAnalysis.scala:141)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$6(CheckAnalysis.scala:299)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$6$adapted(CheckAnalysis.scala:297)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:244)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$5(CheckAnalysis.scala:297)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$5$adapted(CheckAnalysis.scala:297)\n\tat scala.collection.immutable.List.foreach(List.scala:431)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$2(CheckAnalysis.scala:297)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.$anonfun$checkAnalysis0$2$adapted(CheckAnalysis.scala:215)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:244)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1$adapted(TreeNode.scala:243)\n\tat scala.collection.Iterator.foreach(Iterator.scala:943)\n\tat scala.collection.Iterator.foreach$(Iterator.scala:943)\n\tat scala.collection.AbstractIterator.foreach(Iterator.scala:1431)\n\tat scala.collection.IterableLike.foreach(IterableLike.scala:74)\n\tat scala.collection.IterableLike.foreach$(IterableLike.scala:73)\n\tat scala.collection.AbstractIterable.foreach(Iterable.scala:56)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1$adapted(TreeNode.scala:243)\n\tat scala.collection.Iterator.foreach(Iterator.scala:943)\n\tat scala.collection.Iterator.foreach$(Iterator.scala:943)\n\tat scala.collection.AbstractIterator.foreach(Iterator.scala:1431)\n\tat scala.collection.IterableLike.foreach(IterableLike.scala:74)\n\tat scala.collection.IterableLike.foreach$(IterableLike.scala:73)\n\tat scala.collection.AbstractIterable.foreach(Iterable.scala:56)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.$anonfun$foreachUp$1$adapted(TreeNode.scala:243)\n\tat scala.collection.Iterator.foreach(Iterator.scala:943)\n\tat scala.collection.Iterator.foreach$(Iterator.scala:943)\n\tat scala.collection.AbstractIterator.foreach(Iterator.scala:1431)\n\tat scala.collection.IterableLike.foreach(IterableLike.scala:74)\n\tat scala.collection.IterableLike.foreach$(IterableLike.scala:73)\n\tat scala.collection.AbstractIterable.foreach(Iterable.scala:56)\n\tat org.apache.spark.sql.catalyst.trees.TreeNode.foreachUp(TreeNode.scala:243)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.checkAnalysis0(CheckAnalysis.scala:215)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.checkAnalysis0$(CheckAnalysis.scala:197)\n\tat org.apache.spark.sql.catalyst.analysis.Analyzer.checkAnalysis0(Analyzer.scala:202)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.checkAnalysis(CheckAnalysis.scala:193)\n\tat org.apache.spark.sql.catalyst.analysis.CheckAnalysis.checkAnalysis$(CheckAnalysis.scala:171)\n\tat org.apache.spark.sql.catalyst.analysis.Analyzer.checkAnalysis(Analyzer.scala:202)\n\tat org.apache.spark.sql.catalyst.analysis.Analyzer.$anonfun$executeAndCheck$1(Analyzer.scala:225)\n\tat org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper$.markInAnalyzer(AnalysisHelper.scala:330)\n\tat org.apache.spark.sql.catalyst.analysis.Analyzer.executeAndCheck(Analyzer.scala:222)\n\tat org.apache.spark.sql.execution.QueryExecution.$anonfun$analyzed$1(QueryExecution.scala:77)\n\tat org.apache.spark.sql.catalyst.QueryPlanningTracker.measurePhase(QueryPlanningTracker.scala:138)\n\tat org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$2(QueryExecution.scala:219)\n\tat org.apache.spark.sql.execution.QueryExecution$.withInternalError(QueryExecution.scala:546)\n\tat org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$1(QueryExecution.scala:219)\n\tat org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:900)\n\tat org.apache.spark.sql.execution.QueryExecution.executePhase(QueryExecution.scala:218)\n\tat org.apache.spark.sql.execution.QueryExecution.analyzed$lzycompute(QueryExecution.scala:77)\n\tat org.apache.spark.sql.execution.QueryExecution.analyzed(QueryExecution.scala:74)\n\tat org.apache.spark.sql.execution.QueryExecution.assertAnalyzed(QueryExecution.scala:66)\n\tat org.apache.spark.sql.Dataset$.$anonfun$ofRows$2(Dataset.scala:99)\n\tat org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:900)\n\tat org.apache.spark.sql.Dataset$.ofRows(Dataset.scala:97)\n\tat org.apache.spark.sql.SparkSession.$anonfun$sql$4(SparkSession.scala:691)\n\tat org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:900)\n\tat org.apache.spark.sql.SparkSession.sql(SparkSession.scala:682)\n\tat org.apache.spark.sql.SparkSession.sql(SparkSession.scala:713)\n\tat org.apache.spark.sql.SparkSession.sql(SparkSession.scala:744)\n\tat org.apache.spark.sql.SQLContext.sql(SQLContext.scala:651)\n\tat org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation.org$apache$spark$sql$hive$thriftserver$SparkExecuteStatementOperation$$execute(SparkExecuteStatementOperation.scala:228)\n\t... 16 more\n",
     "metrics": {
       "model": "qwen2.5-coder:7b",
-      "prompt_tokens": 6048,
-      "generated_tokens": 59,
-      "tokens_per_second": 43.92,
-      "total_time_sec": 1.65,
-      "load_time_sec": 0.07,
-      "prompt_processing_time_sec": 0.21,
-      "generation_time_sec": 1.34
+      "prompt_tokens": 13755,
+      "generated_tokens": 63,
+      "tokens_per_second": 41.77,
+      "total_time_sec": 9.09,
+      "load_time_sec": 0.05,
+      "prompt_processing_time_sec": 7.48,
+      "generation_time_sec": 1.51
     },
     "sql_expected": "SELECT decade, COUNT(*) AS movie_count, ROUND(AVG(average_rating), 2) AS avg_rating\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'movie'\n  AND decade IS NOT NULL\n  AND average_rating IS NOT NULL\nGROUP BY decade\nORDER BY decade;\n"
   },
   {
     "id": "analytics_07",
     "question": "Find the TV series with the most episodes.",
-    "sql_generated": "SELECT t.primary_title, COUNT(f.episode_title_id) AS episode_count\nFROM demo.stage_analytics.fact_episode f\nJOIN demo.stage_analytics.dim_title t ON f.series_title_id = t.title_id\nWHERE t.title_type_name = 'tvSeries'\nGROUP BY t.primary_title\nORDER BY episode_count DESC\nLIMIT 1;",
+    "sql_generated": "SELECT t.primary_title, COUNT(e.episode_title_id) AS episode_count\nFROM demo.stage_analytics.dim_title t\nJOIN demo.stage_analytics.fact_episode e ON t.title_id = e.series_title_id\nWHERE t.title_type_name = 'tvSeries'\nGROUP BY t.title_id, t.primary_title\nORDER BY episode_count DESC\nLIMIT 1;",
     "error": null,
     "metrics": {
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6043,
-      "generated_tokens": 71,
-      "tokens_per_second": 43.92,
-      "total_time_sec": 1.84,
+      "generated_tokens": 75,
+      "tokens_per_second": 45.85,
+      "total_time_sec": 1.86,
       "load_time_sec": 0.08,
       "prompt_processing_time_sec": 0.11,
-      "generation_time_sec": 1.62
+      "generation_time_sec": 1.64
     },
     "sql_expected": "SELECT series_primary_title, COUNT(*) AS episode_count\nFROM demo.stage_analytics.fact_episode\nGROUP BY series_title_id, series_primary_title\nORDER BY episode_count DESC\nLIMIT 10;\n"
   },
@@ -637,11 +637,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6047,
       "generated_tokens": 82,
-      "tokens_per_second": 43.72,
-      "total_time_sec": 2.21,
-      "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.22,
-      "generation_time_sec": 1.88
+      "tokens_per_second": 46.24,
+      "total_time_sec": 2.19,
+      "load_time_sec": 0.07,
+      "prompt_processing_time_sec": 0.32,
+      "generation_time_sec": 1.77
     },
     "sql_expected": "SELECT t.primary_title, f.number_of_votes\nFROM demo.stage_analytics.fact_title_genre_flat f\nJOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\nWHERE f.genre_name = 'Drama'\n  AND f.title_type_name = 'movie'\n  AND f.number_of_votes IS NOT NULL\nORDER BY f.number_of_votes DESC\nLIMIT 10;\n"
   },
@@ -654,11 +654,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6048,
       "generated_tokens": 90,
-      "tokens_per_second": 43.63,
-      "total_time_sec": 2.4,
-      "load_time_sec": 0.07,
-      "prompt_processing_time_sec": 0.23,
-      "generation_time_sec": 2.06
+      "tokens_per_second": 46.24,
+      "total_time_sec": 2.31,
+      "load_time_sec": 0.08,
+      "prompt_processing_time_sec": 0.25,
+      "generation_time_sec": 1.95
     },
     "sql_expected": "SELECT p.name, COUNT(DISTINCT f.title_id) AS movie_count\nFROM demo.stage_analytics.fact_title_cast_crew f\nJOIN demo.stage_analytics.dim_person p ON f.person_id = p.person_id\nJOIN demo.stage_analytics.dim_title t ON f.title_id = t.title_id\nWHERE f.role_name = 'composer'\n  AND t.title_type_name = 'movie'\nGROUP BY p.name\nHAVING COUNT(DISTINCT f.title_id) > 20\nORDER BY movie_count DESC;\n"
   },
@@ -671,11 +671,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6049,
       "generated_tokens": 81,
-      "tokens_per_second": 44.03,
-      "total_time_sec": 2.17,
+      "tokens_per_second": 45.99,
+      "total_time_sec": 2.31,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.22,
-      "generation_time_sec": 1.84
+      "prompt_processing_time_sec": 0.43,
+      "generation_time_sec": 1.76
     },
     "sql_expected": "SELECT t.primary_title, r.localized_title, t.average_rating\nFROM demo.stage_analytics.dim_title t\nJOIN demo.stage_analytics.fact_title_release r ON t.title_id = r.title_id\nWHERE t.title_type_name = 'movie'\n  AND t.average_rating IS NOT NULL\n  AND r.language_name = 'French'\nORDER BY t.average_rating DESC\nLIMIT 20;\n"
   },
@@ -688,11 +688,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6055,
       "generated_tokens": 81,
-      "tokens_per_second": 43.89,
-      "total_time_sec": 2.19,
+      "tokens_per_second": 46.23,
+      "total_time_sec": 2.11,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.23,
-      "generation_time_sec": 1.85
+      "prompt_processing_time_sec": 0.25,
+      "generation_time_sec": 1.75
     },
     "sql_expected": "SELECT series_primary_title,\n       MAX(episode_average_rating) AS best_episode_rating,\n       series_average_rating,\n       ROUND(MAX(episode_average_rating) - series_average_rating, 2) AS improvement\nFROM demo.stage_analytics.fact_episode\nWHERE episode_average_rating IS NOT NULL\n  AND series_average_rating IS NOT NULL\nGROUP BY series_title_id, series_primary_title, series_average_rating\nORDER BY improvement DESC\nLIMIT 10;\n"
   },
@@ -705,11 +705,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6049,
       "generated_tokens": 98,
-      "tokens_per_second": 43.83,
-      "total_time_sec": 2.56,
+      "tokens_per_second": 45.2,
+      "total_time_sec": 2.51,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.21,
-      "generation_time_sec": 2.24
+      "prompt_processing_time_sec": 0.23,
+      "generation_time_sec": 2.17
     },
     "sql_expected": "SELECT f.genre_name, COUNT(DISTINCT c.person_id) AS director_count\nFROM demo.stage_analytics.fact_title_genre_flat f\nJOIN demo.stage_analytics.fact_title_cast_crew c ON f.title_id = c.title_id\nWHERE f.title_type_name = 'movie'\n  AND c.role_name = 'director'\nGROUP BY f.genre_name\nORDER BY director_count DESC;\n"
   },
@@ -722,11 +722,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6052,
       "generated_tokens": 80,
-      "tokens_per_second": 43.52,
-      "total_time_sec": 2.16,
+      "tokens_per_second": 46.11,
+      "total_time_sec": 2.21,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.21,
-      "generation_time_sec": 1.84
+      "prompt_processing_time_sec": 0.37,
+      "generation_time_sec": 1.73
     },
     "sql_expected": "SELECT primary_title, release_year, average_rating\nFROM demo.stage_analytics.dim_title\nWHERE title_type_name = 'tvMiniSeries'\n  AND release_year > 2010\n  AND average_rating > 8\nORDER BY average_rating DESC;\n"
   },
@@ -739,11 +739,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6052,
       "generated_tokens": 51,
-      "tokens_per_second": 44.06,
-      "total_time_sec": 1.47,
-      "load_time_sec": 0.07,
-      "prompt_processing_time_sec": 0.21,
-      "generation_time_sec": 1.16
+      "tokens_per_second": 46.36,
+      "total_time_sec": 1.44,
+      "load_time_sec": 0.08,
+      "prompt_processing_time_sec": 0.23,
+      "generation_time_sec": 1.1
     },
     "sql_expected": "SELECT season_number,\n       COUNT(*) AS episode_count,\n       ROUND(AVG(episode_average_rating), 2) AS avg_rating\nFROM demo.stage_analytics.fact_episode\nWHERE LOWER(series_primary_title) = 'the wire'\nGROUP BY season_number\nORDER BY season_number;\n"
   },
@@ -756,11 +756,11 @@
       "model": "qwen2.5-coder:7b",
       "prompt_tokens": 6053,
       "generated_tokens": 100,
-      "tokens_per_second": 43.67,
-      "total_time_sec": 2.53,
+      "tokens_per_second": 45.13,
+      "total_time_sec": 2.46,
       "load_time_sec": 0.08,
-      "prompt_processing_time_sec": 0.12,
-      "generation_time_sec": 2.29
+      "prompt_processing_time_sec": 0.13,
+      "generation_time_sec": 2.22
     },
     "sql_expected": "SELECT p.name, COUNT(DISTINCT f.genre_name) AS genre_count\nFROM demo.stage_analytics.fact_title_cast_crew c\nJOIN demo.stage_analytics.dim_person p ON c.person_id = p.person_id\nJOIN demo.stage_analytics.fact_title_genre_flat f ON c.title_id = f.title_id\nWHERE c.role_name IN ('actor', 'actress')\n  AND f.title_type_name = 'movie'\nGROUP BY p.name\nORDER BY genre_count DESC\nLIMIT 5;\n"
   }

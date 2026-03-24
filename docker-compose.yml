@@ -104,6 +104,12 @@ services:
       --conf spark.cores.max=1
       --conf spark.executor.memory=1G
       --conf spark.driver.memory=1G"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:4040 > /dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
     networks:
       - iceberg_net
   
@@ -235,6 +241,26 @@ services:
       bash -c "sleep 10 && airflow scheduler"
     networks:
       iceberg_net:
+
+###############################################################
+# ---------- Text-to-SQL AI Agent (FastAPI + LangGraph) ------
+###############################################################
+  text-to-sql:
+    build:
+      context: ./ai/text-to-sql
+      dockerfile: Dockerfile
+    container_name: text-to-sql
+    depends_on:
+      spark-thrift-server:
+        condition: service_healthy
+    volumes:
+      - ./ai:/usr/app/ai
+    ports:
+      - "8001:8000"
+    networks:
+      - iceberg_net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 # #####################################
 # # ---------- Ollama LLM engine ------
