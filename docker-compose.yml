@@ -7,9 +7,9 @@ x-spark-image: &spark-image
     dockerfile: ./load/docker/Dockerfile
 
 x-spark-env: &spark-env
-  AWS_ACCESS_KEY_ID: admin
-  AWS_SECRET_ACCESS_KEY: password
-  AWS_REGION: eu-west-2
+  AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+  AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+  AWS_REGION: ${AWS_REGION}
   SPARK_RPC_AUTHENTICATION_ENABLED: "no"
   SPARK_RPC_ENCRYPTION_ENABLED: "no"
   SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED: "no"
@@ -24,14 +24,14 @@ x-airflow-image: &airflow-image
 
 x-airflow-env: &airflow-env
   AIRFLOW__CORE__EXECUTOR: LocalExecutor
-  AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+  AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
   AIRFLOW__CORE__LOAD_EXAMPLES: "false"
-  AIRFLOW__WEBSERVER__SECRET_KEY: "b7c51d01e7c447d88a07de15efbf14cd"
+  AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW_WEBSERVER_SECRET_KEY}
   AIRFLOW__API__AUTH_BACKENDS: airflow.api.auth.backend.basic_auth
   S3_ENDPOINT: http://minio:9000
-  AWS_ACCESS_KEY_ID: admin
-  AWS_SECRET_ACCESS_KEY: password
-  REGION: eu-west-2
+  AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+  AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+  REGION: ${AWS_REGION}
   PROJECTS_DIR: ${PROJECTS_DIR}
 
 services:
@@ -96,10 +96,10 @@ services:
       sh -c "
       sleep 30 &&
       ./sbin/start-thriftserver.sh --master spark://spark-master:7077
-      --conf spark.sql.catalog.demo.s3.access-key-id=admin
-      --conf spark.sql.catalog.demo.s3.secret-access-key=password
-      --conf spark.driver.extraJavaOptions='-Daws.region=eu-west-2'
-      --conf spark.executor.extraJavaOptions='-Daws.region=eu-west-2'
+      --conf spark.sql.catalog.demo.s3.access-key-id=${AWS_ACCESS_KEY_ID}
+      --conf spark.sql.catalog.demo.s3.secret-access-key=${AWS_SECRET_ACCESS_KEY}
+      --conf spark.driver.extraJavaOptions='-Daws.region=${AWS_REGION}'
+      --conf spark.executor.extraJavaOptions='-Daws.region=${AWS_REGION}'
       --conf spark.executor.cores=1
       --conf spark.cores.max=1
       --conf spark.executor.memory=1G
@@ -125,15 +125,15 @@ services:
     ports:
       - 8181:8181
     environment:
-      - AWS_ACCESS_KEY_ID=admin
-      - AWS_SECRET_ACCESS_KEY=password
-      - AWS_REGION=eu-west-2
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
       - CATALOG_WAREHOUSE=s3://warehouse/
       - CATALOG_IO__IMPL=org.apache.iceberg.aws.s3.S3FileIO
       - CATALOG_S3_ENDPOINT=http://minio:9000
       - CATALOG_URI=jdbc:postgresql://postgres:5432/catalog_metadata
-      - CATALOG_JDBC_USER=iceberg
-      - CATALOG_JDBC_PASSWORD=iceberg
+      - CATALOG_JDBC_USER=${CATALOG_JDBC_USER}
+      - CATALOG_JDBC_PASSWORD=${CATALOG_JDBC_PASSWORD}
     depends_on:
       postgres:
         condition: service_healthy
@@ -145,8 +145,8 @@ services:
     image: minio/minio:RELEASE.2025-09-07T16-13-09Z-cpuv1
     container_name: minio
     environment:
-      - MINIO_ROOT_USER=admin
-      - MINIO_ROOT_PASSWORD=password
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
       - MINIO_DOMAIN=minio
     networks:
       iceberg_net:
@@ -166,12 +166,12 @@ services:
     networks:
       iceberg_net:
     environment:
-      - AWS_ACCESS_KEY_ID=admin
-      - AWS_SECRET_ACCESS_KEY=password
-      - AWS_REGION=eu-west-2
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
     entrypoint: >
       /bin/sh -c "
-      until (/usr/bin/mc alias set minio http://minio:9000/ admin password) do echo '...waiting...' && sleep 1; done;
+      until (/usr/bin/mc alias set minio http://minio:9000/ $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY) do echo '...waiting...' && sleep 1; done;
       /usr/bin/mc mb minio/warehouse || echo 'Warehouse already exists';
       /usr/bin/mc policy set public minio/warehouse;
       tail -f /dev/null
@@ -184,8 +184,8 @@ services:
     image: postgres:14
     container_name: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
