@@ -18,7 +18,7 @@ models:
           - relationships:
               to: ref('dim_title')
               field: title_id
-              severity: warn
+              severity: error
 
       - name: localized_title
         description: Localized title used in a specific region.

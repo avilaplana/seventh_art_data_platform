@@ -55,9 +55,13 @@ models:
         data_type: integer
 
       - name: decade
-        description: Decade derived from the release year (e.g. 1990s, 2000s).
+        description: >
+          Decade derived from the release year (e.g. 1990s, 2000s).
+          Values: 1890s, 1900s, 1910s, 1920s, 1930s, 1940s, 1950s, 1960s, 1970s, 1980s, 1990s, 2000s, 2010s, 2020s.
         data_type: string
 
       - name: rating_bucket
-        description: Rating bucket derived from the average rating.
+        description: >
+          Rating bucket derived from the average rating.
+          Values: no_rating, 0-5, 5-7, 7-8, 8-9, 9+.
         data_type: string

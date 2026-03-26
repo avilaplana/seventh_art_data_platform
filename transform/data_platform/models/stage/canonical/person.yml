@@ -2,7 +2,7 @@ models:
   - name: person
     config:
       contract:
-        enforced: true  
+        enforced: true
     description: >
       Master table containing people involved in titles,
       such as actors, directors, writers, and other crew members.
@@ -26,17 +26,18 @@ models:
         description: Year the person died, if applicable.
       - name: ingested_at_timestamp
         data_type: timestamp
+        description: Timestamp when the record was ingested into the data platform.
+        tests:
+          - not_null
 
       - name: snapshot_date
         data_type: date
+        description: Date of the snapshot from which this record was loaded.
+        tests:
+          - not_null
 
       - name: snapshot_try
         data_type: int
-      - name: ingested_at_timestamp
-        data_type: timestamp
-
-      - name: snapshot_date
-        data_type: date
-
-      - name: snapshot_try
-        data_type: int        
+        description: Retry attempt number for the snapshot ingestion.
+        tests:
+          - not_null

@@ -2,7 +2,7 @@ models:
   - name: title_type
     config:
       contract:
-        enforced: true    
+        enforced: true
     description: >
       Lookup table defining the type of a title,
       such as movie, TV series, episode, or short.
@@ -19,11 +19,22 @@ models:
         tests:
           - not_null
           - unique
+          - accepted_values:
+              values: [movie, tvSeries, short, tvEpisode, tvMiniSeries, tvMovie, tvShort, tvSpecial, video, videoGame]
       - name: ingested_at_timestamp
         data_type: timestamp
+        description: Timestamp when the record was ingested into the data platform.
+        tests:
+          - not_null
 
       - name: snapshot_date
         data_type: date
+        description: Date of the snapshot from which this record was loaded.
+        tests:
+          - not_null
 
       - name: snapshot_try
-        data_type: int          
+        data_type: int
+        description: Retry attempt number for the snapshot ingestion.
+        tests:
+          - not_null
