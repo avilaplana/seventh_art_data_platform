@@ -64,12 +64,12 @@ def skip_if_disabled(flag_name: str):
 # TASK CALLABLE
 ##################################################
 
-def run_extract(script_name: str):
+def run_extract(filename: str):
     # One global switch for ALL extract tasks
     skip_if_disabled(GLOBAL_EXTRACT_FLAG)
 
-    module = __import__(script_name)
-    module.main()
+    module = __import__("extract_to_s3")
+    module.extract(filename)
 
 ##################################################
 # DAG
@@ -88,24 +88,26 @@ with DAG(
     # Step 1: Extract all IMDB raw files to S3/MinIO #
     ##################################################
     EXTRACT_SCRIPT_DIR = "/opt/airflow/extract/src/"
-    extract_raw_scripts = [
-        "extract_name_basics_to_s3",
-        "extract_title_principals_to_s3",
-        "extract_title_akas_to_s3",
-        "extract_title_basics_to_s3",
-        "extract_title_crew_to_s3",
-        "extract_title_episode_to_s3",
-        "extract_title_ratings_to_s3"
-        ]
+    extract_raw_files = [
+        "name.basics.tsv.gz",
+        "title.principals.tsv.gz",
+        "title.akas.tsv.gz",
+        "title.basics.tsv.gz",
+        "title.crew.tsv.gz",
+        "title.episode.tsv.gz",
+        "title.ratings.tsv.gz",
+    ]
 
     extract_tasks = []
     sys.path.append(EXTRACT_SCRIPT_DIR)
 
-    for script in extract_raw_scripts:
+    for filename in extract_raw_files:
+        # Derive a readable task_id from the filename, e.g. "extract_name_basics_to_s3"
+        task_id = "extract_" + filename.replace(".", "_").replace("_tsv_gz", "") + "_to_s3"
         extract_task = PythonOperator(
-            task_id=f"{script}",
+            task_id=task_id,
             python_callable=run_extract,
-            op_kwargs={"script_name": script},
+            op_kwargs={"filename": filename},
         )
         extract_tasks.append(extract_task)
 
