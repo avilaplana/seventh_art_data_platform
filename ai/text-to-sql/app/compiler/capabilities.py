@@ -1,5 +1,7 @@
 from pathlib import Path
 import glob
+import os
+import threading
 from ollama import Client
 import jaydebeapi
 from typing import List, Dict, Any, Mapping
@@ -13,6 +15,7 @@ SPARK_THRIFT_HOST = "spark-thrift-server"
 SPARK_THRIFT_PORT = 10000
 DATABASE = "demo.stage_analytics"
 SPARK_JARS = ":".join(glob.glob("/opt/bitnami/spark/jars/*.jar"))
+QUERY_TIMEOUT_SEC = int(os.getenv("QUERY_TIMEOUT_SEC", "30"))
 
 # load schemas once
 DATA_FOLDER = Path(__file__).parent.parent.parent / "data"
@@ -71,11 +74,32 @@ def generate_sql(user_query: str, prompt_config: Any, history: List[Dict[str, st
 
 
 def execute_sql_query(sql: str) -> Dict[str, Any]:
-    cursor = SPARK_CLIENT.cursor()
-    cursor.execute(sql)
-    columns = [desc[0] for desc in cursor.description]
-    rows = cursor.fetchall()
-    cursor.close()
-    return {"columns": columns, "rows": rows}
+    result_container: Dict[str, Any] = {}
+    exception_container: Dict[str, Exception] = {}
+
+    def _run() -> None:
+        try:
+            cursor = SPARK_CLIENT.cursor()
+            cursor.execute(sql)
+            columns = [desc[0] for desc in cursor.description]
+            rows = cursor.fetchall()
+            cursor.close()
+            result_container["result"] = {"columns": columns, "rows": rows}
+        except Exception as exc:  # noqa: BLE001
+            exception_container["exc"] = exc
+
+    thread = threading.Thread(target=_run, daemon=True)
+    thread.start()
+    thread.join(timeout=QUERY_TIMEOUT_SEC)
+
+    if thread.is_alive():
+        raise TimeoutError(
+            f"Query execution exceeded the {QUERY_TIMEOUT_SEC}s timeout limit"
+        )
+
+    if "exc" in exception_container:
+        raise exception_container["exc"]
+
+    return result_container["result"]
 
 
