@@ -1,6 +1,5 @@
 
-def build_spark_submit(job: str, snapshot_date: str, ingested_at_timestamp: str, snapshot_try: int, extra_args: str = ""):
-    extra = f" {extra_args}" if extra_args else ""
+def build_spark_submit(job: str, snapshot_date: str, ingested_at_timestamp: str, snapshot_try: int):    
     return f"""\
 spark-submit \
 --master spark://spark-master:7077 \
@@ -29,5 +28,5 @@ org.apache.hadoop:hadoop-aws:3.3.4 \
 {job} \
 --snapshot_date {snapshot_date} \
 --ingested_at_timestamp "{ingested_at_timestamp}" \
---snapshot_try {snapshot_try}{extra}
+--snapshot_try {snapshot_try}
 """

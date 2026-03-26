@@ -160,50 +160,27 @@ with DAG(
     # Step 2: Load each raw file from S3/MinIO to Iceberg using Spark jobs #
     ########################################################################
     SPARK_JOBS_DIR = "/opt/airflow/load/src/"
-
-    # (table_name, source_filename) pairs for the consolidated load script
-    load_raw_tables = [
-        ("name_basics",      "name.basics.tsv.gz"),
-        ("title_akas",       "title.akas.tsv.gz"),
-        ("title_basics",     "title.basics.tsv.gz"),
-        ("title_crew",       "title.crew.tsv.gz"),
-        ("title_episode",    "title.episode.tsv.gz"),
-        ("title_principals", "title.principals.tsv.gz"),
-        ("title_ratings",    "title.ratings.tsv.gz"),
-    ]
+    load_raw_jobs = [
+        "create_tables",
+        "load_to_iceberg_name_basics",
+        "load_to_iceberg_title_akas",
+        "load_to_iceberg_title_basics",
+        "load_to_iceberg_title_crew",
+        "load_to_iceberg_title_episode",
+        "load_to_iceberg_title_principals",
+        "load_to_iceberg_title_ratings"
+        ]
     spark_raw_tasks = []
 
     snapshot_try = int(Variable.get(RETRY_COUNTER_VAR, default_var=0))
 
-    # create_tables runs first (no --table/--file args)
-    create_tables_task = BashOperator(
-        retries=2,
-        retry_delay=timedelta(minutes=5),
-        task_id="load_SPARK_stage_raw_create_tables",
-        bash_command=build_spark_submit(
-            f"{SPARK_JOBS_DIR}create_tables.py",
-            snapshot_date,
-            ingested_at_timestamp,
-            snapshot_try,
-        ),
-        execution_timeout=timedelta(hours=2),
-    )
-    spark_raw_tasks.append(create_tables_task)
-
-    # All table loads use the single consolidated script
-    for table, filename in load_raw_tables:
-        spark_task_id = f"load_SPARK_stage_raw_{table}"
+    for job in load_raw_jobs:
+        spark_task_id = f"load_SPARK_stage_raw_{job}"
         spark_task = BashOperator(
             retries=2,
             retry_delay=timedelta(minutes=5),
             task_id=spark_task_id,
-            bash_command=build_spark_submit(
-                f"{SPARK_JOBS_DIR}load_to_iceberg.py",
-                snapshot_date,
-                ingested_at_timestamp,
-                snapshot_try,
-                extra_args=f"--table {table} --file {filename}",
-            ),
+            bash_command=build_spark_submit(f"{SPARK_JOBS_DIR}{job}.py", snapshot_date, ingested_at_timestamp, snapshot_try),
             execution_timeout=timedelta(hours=2),
         )
         spark_raw_tasks.append(spark_task)

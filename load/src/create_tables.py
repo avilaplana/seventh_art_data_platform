@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from s3_utils import get_object_path
+from s3_utils import object_path
 
 spark = SparkSession.builder \
     .appName("create-tables-Iceberg-MinIO") \
@@ -30,7 +30,6 @@ CREATE TABLE IF NOT EXISTS demo.stage_raw.name_basics (
     ingested_at_timestamp TIMESTAMP,
     snapshot_try INT
 ) USING iceberg
-PARTITIONED BY (snapshot_date)
 """)
 
 spark.sql("""
@@ -47,7 +46,6 @@ CREATE TABLE IF NOT EXISTS demo.stage_raw.title_akas (
     ingested_at_timestamp TIMESTAMP,
     snapshot_try INT
 ) USING iceberg
-PARTITIONED BY (snapshot_date)
 """)
 
 spark.sql("""
@@ -65,7 +63,6 @@ CREATE TABLE IF NOT EXISTS demo.stage_raw.title_basics (
     ingested_at_timestamp TIMESTAMP,
     snapshot_try INT
 ) USING iceberg
-PARTITIONED BY (snapshot_date)
 """)
 
 spark.sql("""
@@ -77,7 +74,6 @@ CREATE TABLE IF NOT EXISTS demo.stage_raw.title_crew (
     ingested_at_timestamp TIMESTAMP,
     snapshot_try INT
 ) USING iceberg
-PARTITIONED BY (snapshot_date)
 """)
 
 spark.sql("""
@@ -90,7 +86,6 @@ CREATE TABLE IF NOT EXISTS demo.stage_raw.title_episode (
     ingested_at_timestamp TIMESTAMP,
     snapshot_try INT
 ) USING iceberg
-PARTITIONED BY (snapshot_date)
 """)
 
 spark.sql("""
@@ -105,7 +100,6 @@ CREATE TABLE IF NOT EXISTS demo.stage_raw.title_principals (
     ingested_at_timestamp TIMESTAMP,
     snapshot_try INT
 ) USING iceberg
-PARTITIONED BY (snapshot_date)
 """)
 
 spark.sql("""
@@ -117,7 +111,6 @@ CREATE TABLE IF NOT EXISTS demo.stage_raw.title_ratings (
     ingested_at_timestamp TIMESTAMP,
     snapshot_try INT
 ) USING iceberg
-PARTITIONED BY (snapshot_date)
 """)
 
 spark.stop()
