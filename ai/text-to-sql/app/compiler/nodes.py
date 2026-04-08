@@ -31,27 +31,49 @@ def repair_sql_node(state: RunnerState) -> dict:
         "error": None,
     }
 
+_AGGREGATION_KEYWORDS = re.compile(
+    r"\b(COUNT|SUM|AVG|MAX|MIN)\s*\(", re.IGNORECASE
+)
+
+def _needs_limit(sql: str) -> bool:
+    """Return True only when it is safe to inject LIMIT 10.
+
+    LIMIT is NOT injected when the query already has a LIMIT, uses GROUP BY,
+    uses HAVING, or contains aggregation functions (COUNT/SUM/AVG/MAX/MIN).
+    """
+    upper = sql.upper()
+    if "LIMIT" in upper:
+        return False
+    if "GROUP BY" in upper:
+        return False
+    if "HAVING" in upper:
+        return False
+    if _AGGREGATION_KEYWORDS.search(sql):
+        return False
+    return True
+
+
 def sanitize_sql_node(state: RunnerState) -> dict:
     """
     Strip ```sql``` blocks, leading/trailing whitespace, etc.
-    Add 'LIMIT 10' if no LIMIT is present in the query.
+    Add 'LIMIT 10' only if the query has no LIMIT, no GROUP BY, no HAVING,
+    and no aggregation functions (COUNT, SUM, AVG, MAX, MIN).
     """
     sql = state["llm_response"]["message"]["content"].strip()
-    
+
     # Remove ```sql ... ``` fences
     if sql.startswith("```sql"):
         sql = "\n".join(sql.splitlines()[1:-1])
-    
+
     sql = sql.strip()
-    
-    # Check if LIMIT exists anywhere (case-insensitive)
-    if "LIMIT" not in sql.upper():
+
+    if _needs_limit(sql):
         # Preserve existing semicolon if present
         ends_with_semicolon = sql.strip().endswith(";")
         sql = sql.rstrip("; \t\n") + " LIMIT 10"
         if ends_with_semicolon:
             sql += ";"
-    
+
     return {"sql_sanitised": sql}
 
 FORBIDDEN_KEYWORDS = [
@@ -102,10 +124,13 @@ def validate_sql_node(state):
         return state
 
     # -------------------------
-    # Rule 4: enforce LIMIT
+    # Rule 4: enforce LIMIT (exempt aggregation / grouped queries)
     # -------------------------
 
-    if "limit" not in query:
+    has_group_by = "group by" in query
+    has_having = "having" in query
+    has_aggregation = bool(_AGGREGATION_KEYWORDS.search(query))
+    if "limit" not in query and not (has_group_by or has_having or has_aggregation):
         state["error"] = "Query must include a LIMIT clause"
         return state
 

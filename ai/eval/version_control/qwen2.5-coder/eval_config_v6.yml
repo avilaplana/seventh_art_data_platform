@@ -180,17 +180,16 @@ eval_config:
       ORDER BY t.average_rating DESC
       LIMIT 20;
 
-      EXAMPLE 6 (cross-fact: cast + genre — genre_name comes from fact_title_genre_flat, not fact_title_cast_crew):
+      EXAMPLE 6 (cross-fact: cast + genre — genre_name and title_type_name come from fact_title_genre_flat, no dim_title join needed just for title_type_name):
       Question:
       For each genre, how many distinct directors have worked on movies in that genre?
 
       SQL:
       SELECT g.genre_name, COUNT(DISTINCT c.person_id) AS director_count
       FROM demo.stage_analytics.fact_title_cast_crew c
-      JOIN demo.stage_analytics.dim_title t ON c.title_id = t.title_id
       JOIN demo.stage_analytics.fact_title_genre_flat g ON c.title_id = g.title_id
       WHERE c.role_name = 'director'
-        AND t.title_type_name = 'movie'
+        AND g.title_type_name = 'movie'
       GROUP BY g.genre_name
       ORDER BY director_count DESC;
 
@@ -215,6 +214,11 @@ eval_config:
         HAVING COUNT(DISTINCT f.title_id) >= 3
       ) ranked
       WHERE rn <= 3;
+
+      ANTI-PATTERNS (do NOT do this):
+      - Do NOT join dim_title just to filter title_type_name when using fact_title_genre_flat — that column is already in the fact table
+      - Do NOT select primary_title from fact_title_cast_crew — join dim_title instead
+      - Do NOT use fact_title_genre (array-based) when fact_title_genre_flat is available
 
       TASK:
       Generate a single Spark SQL SELECT query that answers the following question:
