@@ -2,7 +2,7 @@ models:
   - name: role
     config:
       contract:
-        enforced: true  
+        enforced: true
     description: >
       Lookup table defining high-level roles a person can have
       in relation to a title (e.g. Actor, Director).
@@ -21,9 +21,18 @@ models:
           - unique
       - name: ingested_at_timestamp
         data_type: timestamp
+        description: Timestamp when the record was ingested into the data platform.
+        tests:
+          - not_null
 
       - name: snapshot_date
         data_type: date
+        description: Date of the snapshot from which this record was loaded.
+        tests:
+          - not_null
 
       - name: snapshot_try
-        data_type: int          
+        data_type: int
+        description: Retry attempt number for the snapshot ingestion.
+        tests:
+          - not_null

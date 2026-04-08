@@ -5,8 +5,32 @@ sources:
     schema: stage_raw
     tables:
       - name: name_basics
+        loaded_at_field: snapshot_date
+        freshness:
+          warn_after: {count: 24, period: hour}
+          error_after: {count: 48, period: hour}
       - name: title_principals
+        loaded_at_field: snapshot_date
+        freshness:
+          warn_after: {count: 24, period: hour}
+          error_after: {count: 48, period: hour}
       - name: title_basics
+        loaded_at_field: snapshot_date
+        freshness:
+          warn_after: {count: 24, period: hour}
+          error_after: {count: 48, period: hour}
       - name: title_ratings
+        loaded_at_field: snapshot_date
+        freshness:
+          warn_after: {count: 24, period: hour}
+          error_after: {count: 48, period: hour}
       - name: title_akas
+        loaded_at_field: snapshot_date
+        freshness:
+          warn_after: {count: 24, period: hour}
+          error_after: {count: 48, period: hour}
       - name: title_episode
+        loaded_at_field: snapshot_date
+        freshness:
+          warn_after: {count: 24, period: hour}
+          error_after: {count: 48, period: hour}

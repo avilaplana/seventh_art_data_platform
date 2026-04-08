@@ -21,7 +21,7 @@ models:
           - relationships:
               to: ref('dim_title')
               field: title_id
-              severity: warn
+              severity: error
 
       - name: episode_title_id
         description: Foreign key to the episode title in dim_title.
@@ -31,7 +31,7 @@ models:
           - relationships:
               to: ref('dim_title')
               field: title_id
-              severity: warn
+              severity: error
 
       - name: season_number
         description: Season number within the series.

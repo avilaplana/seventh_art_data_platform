@@ -35,7 +35,9 @@ models:
         +catalog: demo
         +file_format: iceberg
         +materialized: table
+        +partition_by: "snapshot_date"
       analytics:
         +catalog: demo
         +file_format: iceberg
-        +materialized: table        
+        +materialized: table
+        +partition_by: "snapshot_date"

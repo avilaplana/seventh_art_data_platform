@@ -2,7 +2,7 @@ models:
   - name: title
     config:
       contract:
-        enforced: true    
+        enforced: true
     description: >
       Core table representing IMDb titles such as movies,
       TV series, and episodes.
@@ -36,6 +36,8 @@ models:
         description: Indicates whether the title is intended for adults.
         tests:
           - not_null
+          - accepted_values:
+              values: ['true', 'false']
       - name: release_year
         data_type: int
         description: Year the title was first released.
@@ -54,9 +56,18 @@ models:
           - not_null
       - name: ingested_at_timestamp
         data_type: timestamp
+        description: Timestamp when the record was ingested into the data platform.
+        tests:
+          - not_null
 
       - name: snapshot_date
         data_type: date
+        description: Date of the snapshot from which this record was loaded.
+        tests:
+          - not_null
 
       - name: snapshot_try
-        data_type: int          
+        data_type: int
+        description: Retry attempt number for the snapshot ingestion.
+        tests:
+          - not_null

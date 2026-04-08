@@ -2,7 +2,7 @@ models:
   - name: title_episode
     config:
       contract:
-        enforced: true      
+        enforced: true
     description: >
       Table representing episodic relationships between titles,
       linking episodes to their parent TV series.
@@ -15,7 +15,7 @@ models:
           - relationships:
               to: ref('title')
               field: title_id
-              severity: warn
+              severity: error
       - name: series_title_id
         data_type: string
         description: Foreign key to the TV series title.
@@ -24,7 +24,7 @@ models:
           - relationships:
               to: ref('title')
               field: title_id
-              severity: warn
+              severity: error
       - name: season_number
         data_type: int
         description: Season number of the episode.
@@ -33,9 +33,18 @@ models:
         description: Episode number within the season.
       - name: ingested_at_timestamp
         data_type: timestamp
+        description: Timestamp when the record was ingested into the data platform.
+        tests:
+          - not_null
 
       - name: snapshot_date
         data_type: date
+        description: Date of the snapshot from which this record was loaded.
+        tests:
+          - not_null
 
       - name: snapshot_try
-        data_type: int        
+        data_type: int
+        description: Retry attempt number for the snapshot ingestion.
+        tests:
+          - not_null

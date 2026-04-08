@@ -31,3 +31,9 @@ models:
       - name: death_year
         description: Year the person died if applicable.
         data_type: integer
+
+      - name: is_alive
+        description: Indicates whether the person is alive (true when death_year is null).
+        data_type: boolean
+        tests:
+          - not_null

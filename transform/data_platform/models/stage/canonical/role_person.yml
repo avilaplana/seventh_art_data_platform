@@ -2,7 +2,7 @@ models:
   - name: role_person
     config:
       contract:
-        enforced: true    
+        enforced: true
     description: >
       Bridge table mapping people to roles they can perform,
       independent of a specific title.
@@ -30,9 +30,18 @@ models:
               field: person_id
       - name: ingested_at_timestamp
         data_type: timestamp
+        description: Timestamp when the record was ingested into the data platform.
+        tests:
+          - not_null
 
       - name: snapshot_date
         data_type: date
+        description: Date of the snapshot from which this record was loaded.
+        tests:
+          - not_null
 
       - name: snapshot_try
-        data_type: int        
+        data_type: int
+        description: Retry attempt number for the snapshot ingestion.
+        tests:
+          - not_null
